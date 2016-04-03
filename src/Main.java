@@ -1,4 +1,6 @@
-import game.Engine;
+import game.engine.Engine;
+import game.engine.SimpleEngine;
+import game.screen.MainMenuScreen;
 
 /**
  * pao_project - xiodine.
@@ -6,7 +8,9 @@ import game.Engine;
  */
 public class Main {
     public static void main(String[] args) {
-        Engine engine = new Engine();
-        engine.run();
+        Engine engine = new SimpleEngine();
+        engine.init();
+        engine.run(new MainMenuScreen());
+        engine.dispose();
     }
 }
