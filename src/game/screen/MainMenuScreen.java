@@ -1,5 +1,6 @@
 package game.screen;
 
+import game.interfaces.Screen;
 import game.utils.Debug;
 
 /**

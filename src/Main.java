@@ -1,5 +1,5 @@
-import game.engine.Engine;
 import game.engine.SimpleEngine;
+import game.interfaces.Engine;
 import game.screen.MainMenuScreen;
 
 /**

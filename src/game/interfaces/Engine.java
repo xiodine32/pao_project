@@ -1,6 +1,4 @@
-package game.engine;
-
-import game.screen.Screen;
+package game.interfaces;
 
 /**
  * pao_project - xiodine.

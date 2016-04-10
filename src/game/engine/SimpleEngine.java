@@ -1,6 +1,7 @@
 package game.engine;
 
-import game.screen.Screen;
+import game.interfaces.Engine;
+import game.interfaces.Screen;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;

@@ -1,4 +1,4 @@
-package game.screen;
+package game.interfaces;
 
 /**
  * pao_project - xiodine.
