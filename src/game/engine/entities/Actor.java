@@ -7,6 +7,10 @@ package game.engine.entities;
 public class Actor extends Entity {
 
 
+    public Actor(int spriteWidth, int spriteHeight) {
+        super(spriteWidth, spriteHeight);
+    }
+
     @Override
     public void tick() {
 

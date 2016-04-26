@@ -5,9 +5,7 @@ package game.interfaces;
  * 4/10/2016
  */
 public interface GameState {
-    int getID();
-
+    long getType();
     String toPacket();
-
     GameState fromPacket();
 }

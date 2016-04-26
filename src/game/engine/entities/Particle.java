@@ -9,6 +9,10 @@ public class Particle extends Entity {
     private double lifetimeStart;
     private double lifetime;
 
+    public Particle(int spriteWidth, int spriteHeight) {
+        super(spriteWidth, spriteHeight);
+    }
+
 
     @Override
     public void tick() {

@@ -8,6 +8,10 @@ public abstract class Entity extends SpriteAnimated {
 
     protected boolean alive;
 
+    public Entity(int spriteWidth, int spriteHeight) {
+        super(spriteWidth, spriteHeight);
+    }
+
     public boolean isAlive() {
         return alive;
     }

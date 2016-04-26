@@ -24,7 +24,7 @@ public class SimpleEngine implements Engine {
     private void initGLFW() {
         if (glfwInit() != GLFW_TRUE)
             throw new IllegalStateException("GLFW no init");
-        window = glfwCreateWindow(800, 600, "Game", 0, 0);
+        window = glfwCreateWindow(800, 600, "Tankies", 0, 0);
         if (window == NULL)
             throw new IllegalStateException("GLFW no screen");
 
@@ -35,8 +35,21 @@ public class SimpleEngine implements Engine {
     private void initOpenGL() {
         GL.createCapabilities();
         glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_DEPTH_TEST);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glViewport(0, 0, 800, 600);
+
+        double fH = Math.tan(90.0 / 360 * Math.PI) * 0.1;
+        double fW = fH * (800 / 600);
+        glFrustum(-fW, fW, -fH, fH, 0.1, 100);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     }
+
 
     public void run(Screen startScreen) {
 

@@ -1,5 +1,6 @@
 package game.screen;
 
+import game.engine.entities.Sprite;
 import game.interfaces.Screen;
 import game.utils.Debug;
 
@@ -9,10 +10,12 @@ import game.utils.Debug;
  */
 public class MainMenuScreen implements Screen {
 
+    Sprite test = new Sprite(64, 64);
 
     @Override
     public void load() {
         Debug.l("load");
+        test.loadTexture("res/test.png");
     }
 
     @Override
@@ -21,10 +24,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void draw() {
+        test.draw();
     }
 
     @Override
     public void unload() {
+        test.deleteTexture();
         Debug.l("unload");
     }
 }

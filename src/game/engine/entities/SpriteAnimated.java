@@ -8,6 +8,10 @@ public abstract class SpriteAnimated extends Sprite {
 
     protected int spriteSelected;
 
+    public SpriteAnimated(int spriteWidth, int spriteHeight) {
+        super(spriteWidth, spriteHeight);
+    }
+
     @Override
     public void draw() {
         super.draw();
