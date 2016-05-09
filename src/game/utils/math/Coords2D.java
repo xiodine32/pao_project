@@ -32,4 +32,8 @@ public class Coords2D {
                 ", y=" + y +
                 '}';
     }
+
+    public boolean empty() {
+        return getX() == 0 && getY() == 0;
+    }
 }

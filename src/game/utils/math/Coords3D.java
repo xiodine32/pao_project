@@ -19,6 +19,10 @@ public class Coords3D {
         this.z = z;
     }
 
+    public static Coords3D from2D(Coords2D from, double z) {
+        return new Coords3D(from.getX(), from.getY(), z);
+    }
+
     public double getX() {
         return x;
     }
@@ -31,7 +35,6 @@ public class Coords3D {
         return z;
     }
 
-
     @Override
     public String toString() {
         return "Coords3D{" +
@@ -39,5 +42,9 @@ public class Coords3D {
                 ", y=" + y +
                 ", z=" + z +
                 '}';
+    }
+
+    public boolean empty() {
+        return getX() == 0 && getY() == 0 && getZ() == 0;
     }
 }

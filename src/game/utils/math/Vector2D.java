@@ -8,6 +8,10 @@ import static org.lwjgl.opengl.GL11.glTranslated;
  */
 public class Vector2D extends Coords2D {
 
+    public Vector2D(Coords2D old) {
+        super(old.getX(), old.getY());
+    }
+
     public Vector2D(double x, double y) {
         super(x, y);
     }
@@ -30,6 +34,14 @@ public class Vector2D extends Coords2D {
     }
 
     public void glTranslate() {
-        glTranslated(getX(), getY(), 0);
+        glTranslate(0);
+    }
+
+    public void glTranslate(double z) {
+        glTranslated(getX(), getY(), z);
+    }
+
+    public Vector2D translate(Coords2D delta) {
+        return translate(getX() + delta.getX(), getY() + delta.getY());
     }
 }

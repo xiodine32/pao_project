@@ -3,11 +3,14 @@ package game.screen;
 import game.engine.KeyboardEventListener;
 import game.engine.entities.MobileCamera;
 import game.engine.entities.Sprite;
-import game.interfaces.*;
+import game.interfaces.Engine;
+import game.interfaces.Entity;
+import game.interfaces.KeyboardListener;
+import game.interfaces.Screen;
 import game.utils.Debug;
 import game.utils.math.Vector3D;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 /**
  * pao_project - xiodine.
@@ -17,7 +20,7 @@ public class MainMenuScreen implements Screen {
 
     private Entity sprite = new Sprite("buttons", "test");
 
-    private Camera camera = new MobileCamera(new Vector3D(0, 0, -2));
+    private MobileCamera camera = new MobileCamera(new Vector3D(0, 0, -2));
 
     private Engine engine;
     private KeyboardListener listener;
@@ -31,6 +34,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void tick() {
+        camera.tick();
     }
 
     @Override
@@ -49,16 +53,18 @@ public class MainMenuScreen implements Screen {
     @Override
     public void bindKeys(KeyboardEventListener keyboardEventListener) {
         listener = keyState -> {
-            if (keyState.getScancode() == GLFW_KEY_Q && !keyState.isPressed()) {
+            if (keyState.getScancode() == GLFW_KEY_ESCAPE && !keyState.isPressed()) {
                 engine.stopRunning();
             }
 
         };
         keyboardEventListener.addEventListener(listener);
+        keyboardEventListener.addEventListener(camera);
     }
 
     @Override
     public void unbindKeys(KeyboardEventListener keyboardEventListener) {
         keyboardEventListener.removeEventListener(listener);
+        keyboardEventListener.removeEventListener(camera);
     }
 }

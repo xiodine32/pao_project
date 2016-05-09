@@ -8,6 +8,10 @@ import static org.lwjgl.opengl.GL11.glTranslated;
  */
 public class Vector3D extends Coords3D {
 
+    public Vector3D(Coords3D old) {
+        super(old.getX(), old.getY(), old.getZ());
+    }
+
     public Vector3D(double x, double y, double z) {
         super(x, y, z);
     }
@@ -34,4 +38,7 @@ public class Vector3D extends Coords3D {
     }
 
 
+    public Vector3D translate(Coords3D delta) {
+        return translate(delta.getX(), delta.getY(), delta.getZ());
+    }
 }
