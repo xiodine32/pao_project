@@ -16,8 +16,6 @@ public class SimpleEngine implements Engine {
 
     private static final double FPS = 1 / 60.0;
 
-    //TODO: Create ThreadedEngine
-
     private long window = 0;
     private Screen runningScreen = null;
 
@@ -38,7 +36,16 @@ public class SimpleEngine implements Engine {
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
+        initOpenGLProjection();
+        initOpenGLModelView();
+    }
 
+    private void initOpenGLModelView() {
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
+
+    private void initOpenGLProjection() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glViewport(0, 0, 800, 600);
@@ -46,8 +53,6 @@ public class SimpleEngine implements Engine {
         double fH = Math.tan(90.0 / 360 * Math.PI) * 0.1;
         double fW = fH * (800 / 600);
         glFrustum(-fW, fW, -fH, fH, 0.1, 100);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
     }
 
 

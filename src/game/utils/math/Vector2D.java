@@ -1,4 +1,4 @@
-package game.utils;
+package game.utils.math;
 
 /**
  * pao_project - xiodine.

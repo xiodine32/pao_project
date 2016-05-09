@@ -6,7 +6,10 @@ package game.interfaces;
  */
 public interface Texture {
 
-    void loadTexture(String path);
+    void bind();
 
-    void deleteTexture();
+    void unbind();
+
+    void delete();
+
 }

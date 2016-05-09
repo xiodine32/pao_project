@@ -1,5 +1,6 @@
 package game.utils;
 
+import game.interfaces.Texture;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -13,14 +14,14 @@ import static org.lwjgl.stb.STBImage.*;
  * Package game.utils.
  * Project pao_project.
  */
-public final class TextureWrapper {
+public final class TextureWrapper implements Texture {
 
     private final int id;
     private final int width;
     private final int height;
 
 
-    public TextureWrapper(int width, int height, ByteBuffer data) {
+    private TextureWrapper(int width, int height, ByteBuffer data) {
         this.width = width;
         this.height = height;
         this.id = glGenTextures();
@@ -43,7 +44,7 @@ public final class TextureWrapper {
         stbi_set_flip_vertically_on_load(1);
         ByteBuffer image = stbi_load(path, w, h, comp, 4);
         if (image == null) {
-            throw new RuntimeException("Failed to load a texture file!"
+            throw new RuntimeException("Failed to load a texture file!" + " - " + path
                     + System.lineSeparator() + stbi_failure_reason());
         }
 
