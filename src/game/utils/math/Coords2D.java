@@ -23,4 +23,5 @@ public class Coords2D {
     public double getY() {
         return y;
     }
+
 }

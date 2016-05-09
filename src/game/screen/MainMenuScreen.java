@@ -5,6 +5,7 @@ import game.engine.entities.Sprite;
 import game.interfaces.Entity;
 import game.interfaces.Screen;
 import game.utils.Debug;
+import game.utils.math.Vector3D;
 
 /**
  * pao_project - xiodine.
@@ -14,7 +15,7 @@ public class MainMenuScreen implements Screen {
 
     private Entity sprite = new Sprite("buttons", "test");
 
-    private Camera camera = new Camera();
+    private Camera camera = new Camera(new Vector3D(0, 0, -2));
 
     @Override
     public void load() {

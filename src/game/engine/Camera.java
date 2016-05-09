@@ -1,6 +1,7 @@
 package game.engine;
 
 import game.interfaces.Drawable;
+import game.utils.math.Vector3D;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -10,10 +11,16 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Camera implements Drawable {
 
+    private Vector3D position;
+
+    public Camera(Vector3D position) {
+        this.position = position;
+    }
+
     @Override
     public void draw() {
         glPushMatrix();
-        glTranslated(0, 0, -1);
+        glTranslated(position.getX(), position.getY(), position.getZ());
     }
 
 
