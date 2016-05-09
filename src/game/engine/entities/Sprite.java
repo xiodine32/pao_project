@@ -1,6 +1,7 @@
 package game.engine.entities;
 
 import game.interfaces.Entity;
+import game.interfaces.Logic;
 import game.interfaces.Texture;
 import game.utils.CSVSingleton;
 import game.utils.TextureWrapper;
@@ -11,15 +12,13 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Created on 09/05/16.
  */
-public class Sprite implements Entity {
+public class Sprite implements Entity, Logic {
 
     private final int spriteWidth;
     private final int spriteHeight;
-
     private final String path;
-
     protected Vector2D location = new Vector2D(0, 0);
-
+    private int sprite;
     private Texture texture;
     private int listID;
 
@@ -70,5 +69,10 @@ public class Sprite implements Entity {
 
     public int getSpriteHeight() {
         return spriteHeight;
+    }
+
+    @Override
+    public void tick() {
+
     }
 }
