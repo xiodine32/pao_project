@@ -1,5 +1,6 @@
 package game.screen;
 
+import game.engine.Camera;
 import game.engine.entities.Sprite;
 import game.interfaces.Entity;
 import game.interfaces.Screen;
@@ -13,6 +14,8 @@ public class MainMenuScreen implements Screen {
 
     private Entity sprite = new Sprite("buttons", "test");
 
+    private Camera camera = new Camera();
+
     @Override
     public void load() {
         Debug.l("load");
@@ -25,7 +28,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void draw() {
+        camera.draw();
         sprite.draw();
+        camera.drawEnd();
     }
 
     @Override
