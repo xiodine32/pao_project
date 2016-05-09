@@ -6,11 +6,9 @@ package game.interfaces;
  */
 public interface Observer<State, Return> {
 
-    boolean respondsTo(State state);
+    void addEventListener(State listener);
 
-    void addEventListener();
+    void fire(Return returnType);
 
-    void fired(State eventType, Return returnType);
-
-    void removeEventListener();
+    void removeEventListener(State listener);
 }

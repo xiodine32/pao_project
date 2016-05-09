@@ -30,4 +30,14 @@ public class Coords3D {
     public double getZ() {
         return z;
     }
+
+
+    @Override
+    public String toString() {
+        return "Coords3D{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }

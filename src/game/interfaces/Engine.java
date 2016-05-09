@@ -7,9 +7,12 @@ package game.interfaces;
 public interface Engine {
     void run(Screen startScreen);
 
+    void stopRunning();
+
     void init();
 
     void dispose();
 
     void changeScreen(Screen newScreen);
+
 }

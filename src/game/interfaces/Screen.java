@@ -1,15 +1,17 @@
 package game.interfaces;
 
+import game.engine.KeyboardEventListener;
+
 /**
  * pao_project - xiodine.
  * 4/3/2016
  */
-public interface Screen {
-    void load();
+public interface Screen extends Logic, Drawable {
+    void bindKeys(KeyboardEventListener keyboardEventListener);
 
-    void tick();
+    void unbindKeys(KeyboardEventListener keyboardEventListener);
 
-    void draw();
+    void load(Engine engine);
 
-    void unload();
+    void unload(Engine engine);
 }

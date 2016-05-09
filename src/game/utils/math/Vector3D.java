@@ -1,5 +1,7 @@
 package game.utils.math;
 
+import static org.lwjgl.opengl.GL11.glTranslated;
+
 /**
  * pao_project - xiodine.
  * 4/10/2016
@@ -26,5 +28,10 @@ public class Vector3D extends Coords3D {
         // FIXME: 4/10/2016
         return null;
     }
+
+    public void glTranslate() {
+        glTranslated(getX(), getY(), getZ());
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package game.utils.math;
 
+import static org.lwjgl.opengl.GL11.glTranslated;
+
 /**
  * pao_project - xiodine.
  * 4/10/2016
@@ -25,5 +27,9 @@ public class Vector2D extends Coords2D {
     public Vector2D rotate(double angle) {
         // FIXME: 4/10/2016
         return null;
+    }
+
+    public void glTranslate() {
+        glTranslated(getX(), getY(), 0);
     }
 }

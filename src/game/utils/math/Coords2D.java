@@ -24,4 +24,12 @@ public class Coords2D {
         return y;
     }
 
+
+    @Override
+    public String toString() {
+        return "Coords2D{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

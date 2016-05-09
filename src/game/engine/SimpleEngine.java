@@ -18,6 +18,8 @@ public class SimpleEngine implements Engine {
 
     private long window = 0;
     private Screen runningScreen = null;
+    private KeyboardEventListener keyboardEventListener;
+    private boolean running;
 
     private void initGLFW() {
         if (glfwInit() != GLFW_TRUE)
@@ -28,6 +30,10 @@ public class SimpleEngine implements Engine {
 
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
+
+        keyboardEventListener = new KeyboardEventListener();
+
+        glfwSetKeyCallback(window, keyboardEventListener);
     }
 
     private void initOpenGL() {
@@ -55,15 +61,17 @@ public class SimpleEngine implements Engine {
         glFrustum(-fW, fW, -fH, fH, 0.1, 100);
     }
 
-
     public void run(Screen startScreen) {
 
         this.runningScreen = startScreen;
-        this.runningScreen.load();
+        this.runningScreen.load(this);
+        this.runningScreen.bindKeys(keyboardEventListener);
 
         double lastTime = glfwGetTime();
-        
-        while (glfwWindowShouldClose(window) == GLFW_FALSE) {
+        running = true;
+        while (running) {
+            if (glfwWindowShouldClose(window) != GLFW_FALSE)
+                running = false;
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             if (runningScreen != null)
@@ -84,6 +92,11 @@ public class SimpleEngine implements Engine {
     }
 
     @Override
+    public void stopRunning() {
+        running = false;
+    }
+
+    @Override
     public void init() {
         initGLFW();
         initOpenGL();
@@ -92,17 +105,19 @@ public class SimpleEngine implements Engine {
     @Override
     public void dispose() {
         if (this.runningScreen != null)
-            this.runningScreen.unload();
+            this.runningScreen.unload(this);
         glfwDestroyWindow(window);
     }
 
     @Override
     public void changeScreen(Screen newScreen) {
 
-        this.runningScreen.unload();
+        this.runningScreen.unbindKeys(keyboardEventListener);
+        this.runningScreen.unload(this);
 
         this.runningScreen = newScreen;
 
-        this.runningScreen.load();
+        this.runningScreen.load(this);
+        this.runningScreen.bindKeys(keyboardEventListener);
     }
 }
