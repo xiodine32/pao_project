@@ -7,8 +7,8 @@ import java.util.Random;
  * pao_project
  */
 public class Map {
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
     private byte[][] map = new byte[WIDTH][HEIGHT];
 
     public Map() {

@@ -4,6 +4,7 @@ import game.interfaces.Entity;
 import game.interfaces.Logic;
 import game.interfaces.Texture;
 import game.utils.CSVSingleton;
+import game.utils.DisplayList;
 import game.utils.TextureWrapper;
 import game.utils.math.Vector2D;
 
@@ -20,7 +21,7 @@ public class Sprite implements Entity, Logic {
     protected Vector2D location = new Vector2D(0, 0);
     private int sprite;
     private Texture texture;
-    private int listID;
+    private DisplayList listID;
 
     public Sprite(String type, String internalName) {
         final String result = CSVSingleton.getInstance().get(type, internalName);
@@ -36,25 +37,24 @@ public class Sprite implements Entity, Logic {
     @Override
     public void draw() {
         texture.bind();
-        glCallList(listID);
+        listID.gl();
     }
 
     @Override
     public void load() {
         texture = TextureWrapper.loadTexture(path);
-        listID = glGenLists(1);
-        glNewList(listID, GL_COMPILE);
-        glBegin(GL_QUADS);
-        glTexCoord2d(0, 0);
-        glVertex2d(-1, -1);
-        glTexCoord2d(0, 1);
-        glVertex2d(-1, 1);
-        glTexCoord2d(1, 1);
-        glVertex2d(1, 1);
-        glTexCoord2d(1, 0);
-        glVertex2d(1, -1);
-        glEnd();
-        glEndList();
+        listID = new DisplayList(() -> {
+            glBegin(GL_QUADS);
+            glTexCoord2d(0, 0);
+            glVertex2d(-1, -1);
+            glTexCoord2d(0, 1);
+            glVertex2d(-1, 1);
+            glTexCoord2d(1, 1);
+            glVertex2d(1, 1);
+            glTexCoord2d(1, 0);
+            glVertex2d(1, -1);
+            glEnd();
+        });
     }
 
     @Override

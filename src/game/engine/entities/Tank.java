@@ -2,6 +2,7 @@ package game.engine.entities;
 
 import game.interfaces.KeyboardListener;
 import game.interfaces.Logic;
+import game.utils.KeySem;
 import game.utils.KeyState;
 import game.utils.math.Vector2D;
 
@@ -26,6 +27,11 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
     private Vector2D position = new Vector2D(0, 0);
     private double rotation;
 
+    private KeySem keyW = new KeySem(GLFW_KEY_W);
+    private KeySem keyS = new KeySem(GLFW_KEY_S);
+    private KeySem keyA = new KeySem(GLFW_KEY_A);
+    private KeySem keyD = new KeySem(GLFW_KEY_D);
+
     public Tank() {
         super("tanks", "test");
     }
@@ -33,7 +39,7 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
     @Override
     public void draw() {
         glPushMatrix();
-        glTranslated(position.getX(), position.getY(), -10);
+        glTranslated(position.getX(), position.getY(), 0.1);
         glRotated((rotation - Math.PI / 2) / Math.PI * 180, 0, 0, 1);
         super.draw();
         glPopMatrix();
@@ -41,40 +47,32 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
 
     @Override
     public void tick() {
-        if (deltaRotation != 0) {
-            rotation += deltaRotation * ROTATION_DELTA;
+        if (keyA.isPressed()) {
+            rotation += ROTATION_DELTA;
         }
-        if (delta != 0) {
-            position = position.translate(
-                    delta * MOVE_DELTA * Math.cos(rotation),
-                    delta * MOVE_DELTA * Math.sin(rotation)
-            );
+        if (keyD.isPressed()) {
+            rotation -= ROTATION_DELTA;
         }
+        double delta = 0;
+        if (keyW.isPressed()) {
+            delta++;
+        }
+        if (keyS.isPressed()) {
+            delta--;
+        }
+
+        position = position.translate(
+                delta * MOVE_DELTA * Math.cos(rotation),
+                delta * MOVE_DELTA * Math.sin(rotation)
+        );
     }
 
     @Override
     public void handleKey(KeyState keyState) {
-        if (keyState.getScancode() == GLFW_KEY_W) {
-            delta = 0;
-            if (keyState.isPressed())
-                delta++;
-        }
-        if (keyState.getScancode() == GLFW_KEY_S) {
-            delta = 0;
-            if (keyState.isPressed())
-                delta--;
-        }
-        if (keyState.getScancode() == GLFW_KEY_A) {
-            deltaRotation = 0;
-            if (keyState.isPressed())
-                deltaRotation = 1;
-        }
-        if (keyState.getScancode() == GLFW_KEY_D) {
-            deltaRotation = 0;
-            if (keyState.isPressed())
-                deltaRotation = -1;
-        }
-
+        keyW.handle(keyState);
+        keyS.handle(keyState);
+        keyA.handle(keyState);
+        keyD.handle(keyState);
     }
 
     @Override
