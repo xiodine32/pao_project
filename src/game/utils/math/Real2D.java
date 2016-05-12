@@ -8,23 +8,19 @@ public class Real2D extends Vector2D {
 
     private final static double STEP = 0.2;
 
-    public Real2D(int x, int y) {
+    public Real2D(double x, double y) {
         super(x * STEP, y * STEP);
-    }
-
-    private Real2D(double x, double y) {
-        super(x, y);
     }
 
     public Real2D() {
         super();
     }
 
-    public Real2D translate(int deltaX, int deltaY) {
+    public Real2D translate(double deltaX, double deltaY) {
         return new Real2D(getX() / STEP + deltaX, getY() / STEP + deltaY);
     }
 
-    public Real2D scale(int deltaX, int deltaY) {
+    public Real2D scale(double deltaX, double deltaY) {
         return new Real2D(getX() / STEP * deltaX, getY() / STEP * deltaY);
     }
 

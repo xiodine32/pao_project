@@ -16,6 +16,7 @@ public final class CSVSingleton {
 
     private CSVSingleton() {
         load("buttons.csv");
+        load("tanks.csv");
     }
 
     public static CSVSingleton getInstance() {

@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 
 /**
  * Created on 09/05/16.
@@ -35,6 +36,8 @@ public class KeyboardEventListener extends GLFWKeyCallback implements Observer<K
 
     @Override
     public void invoke(long window, int key, int scancode, int action, int mods) {
+        if (action == GLFW_REPEAT)
+            return;
         fire(new KeyState(key, action != GLFW_RELEASE));
     }
 }
