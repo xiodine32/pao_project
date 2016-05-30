@@ -43,9 +43,9 @@ public class FollowingCamera implements Camera, Logic, KeyboardListener {
     public void tick() {
         double deltaZ = 0;
         if (keyQ.isPressed())
-            deltaZ += 0.1;
+            deltaZ += 0.8;
         if (keyE.isPressed())
-            deltaZ -= 0.1;
+            deltaZ -= 0.8;
         Vector3D position = new Vector3D(-followingTank.getPosition().getX(), -followingTank.getPosition().getY(), realPosition.getZ() + deltaZ);
 
         final double DELTA = 0.1;

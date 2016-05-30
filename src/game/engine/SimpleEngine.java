@@ -15,6 +15,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class SimpleEngine implements Engine {
 
     private static final double FPS = 1 / 60.0;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
 
     private long window = 0;
     private Screen runningScreen = null;
@@ -24,7 +26,7 @@ public class SimpleEngine implements Engine {
     private void initGLFW() {
         if (glfwInit() != GLFW_TRUE)
             throw new IllegalStateException("GLFW no init");
-        window = glfwCreateWindow(800, 600, "Tankies", 0, 0);
+        window = glfwCreateWindow(WIDTH, HEIGHT, "Tankies", 0, 0);
         if (window == NULL)
             throw new IllegalStateException("GLFW no screen");
 
@@ -55,10 +57,10 @@ public class SimpleEngine implements Engine {
     private void initOpenGLProjection() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glViewport(0, 0, 800, 600);
+        glViewport(0, 0, WIDTH, HEIGHT);
 
         double fH = Math.tan(90.0 / 360 * Math.PI) * 0.1;
-        double fW = fH * (800 / 600);
+        double fW = fH * (WIDTH / HEIGHT);
         glFrustum(-fW, fW, -fH, fH, 0.1, 100);
     }
 

@@ -51,13 +51,15 @@ public class Sprite implements Entity {
                 int finalJ = j;
                 lists[k] = new DisplayList(() -> {
                     glBegin(GL_QUADS);
-                    glTexCoord2d((finalI + 0.01) / (double) n, (finalJ + 0.01) / (double) m);
+                    double texelW = 0.5 / texture.getWidth();
+                    double texelH = 0.5 / texture.getWidth();
+                    glTexCoord2d((finalI) / (double) n + texelW, (finalJ) / (double) m + texelH);
                     glVertex3d(-0.5, -0.5, 0);
-                    glTexCoord2d((finalI + 0.01) / (double) n, (finalJ + 0.99) / (double) m);
+                    glTexCoord2d((finalI) / (double) n + texelW, (finalJ + 1) / (double) m - texelH);
                     glVertex3d(-0.5, 0.5, 0);
-                    glTexCoord2d((finalI + 0.99) / (double) n, (finalJ + 0.99) / (double) m);
+                    glTexCoord2d((finalI + 1) / (double) n - texelW, (finalJ + 1) / (double) m - texelH);
                     glVertex3d(0.5, 0.5, 0);
-                    glTexCoord2d((finalI + 0.99) / (double) n, (finalJ + 0.01) / (double) m);
+                    glTexCoord2d((finalI + 1) / (double) n - texelW, (finalJ) / (double) m + texelH);
                     glVertex3d(0.5, -0.5, 0);
                     glEnd();
                 });
