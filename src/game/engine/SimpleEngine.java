@@ -40,10 +40,11 @@ public class SimpleEngine implements Engine {
 
     private void initOpenGL() {
         GL.createCapabilities();
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_DEPTH_TEST);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
         initOpenGLProjection();
         initOpenGLModelView();
     }

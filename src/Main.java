@@ -1,6 +1,6 @@
 import game.engine.SimpleEngine;
 import game.interfaces.Engine;
-import game.screen.GameScreen;
+import game.screen.MainMenuScreen;
 
 /**
  * pao_project - xiodine.
@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Engine engine = new SimpleEngine();
         engine.init();
-        engine.run(new GameScreen());
+        engine.run(new MainMenuScreen());
 //        engine.changeScreen(new GameScreen());
         engine.dispose();
     }

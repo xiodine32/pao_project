@@ -17,6 +17,7 @@ public final class CSVSingleton {
     private CSVSingleton() {
         load("tanks.csv");
         load("tiles.csv");
+        load("buttons.csv");
         load("bullets.csv");
     }
 

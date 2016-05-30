@@ -14,9 +14,10 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
  */
 public class MobileCamera extends FixedCamera implements KeyboardListener, Logic {
 
+    private static final double SPEED = 0.05;
     private Vector3D realPosition;
-
     private Vector3D delta = new Vector3D(0, 0, 0);
+
 
     public MobileCamera(Vector3D position) {
         super(position);
@@ -38,34 +39,34 @@ public class MobileCamera extends FixedCamera implements KeyboardListener, Logic
         if (keyState.getScancode() == GLFW_KEY_W) {
             delta = delta.scale(1, 0, 1);
             if (keyState.isPressed())
-                delta = delta.translate(0, -1, 0);
+                delta = delta.translate(0, -SPEED, 0);
         }
 
         if (keyState.getScancode() == GLFW_KEY_S) {
             delta = delta.scale(1, 0, 1);
             if (keyState.isPressed())
-                delta = delta.translate(0, 1, 0);
+                delta = delta.translate(0, SPEED, 0);
         }
         if (keyState.getScancode() == GLFW_KEY_A) {
             delta = delta.scale(0, 1, 1);
             if (keyState.isPressed())
-                delta = delta.translate(1, 0, 0);
+                delta = delta.translate(SPEED, 0, 0);
         }
         if (keyState.getScancode() == GLFW_KEY_D) {
             delta = delta.scale(0, 1, 1);
             if (keyState.isPressed())
-                delta = delta.translate(-1, 0, 0);
+                delta = delta.translate(-SPEED, 0, 0);
         }
 
-        if (keyState.getScancode() == GLFW_KEY_Q) {
-            delta = delta.scale(1, 1, 0);
-            if (keyState.isPressed())
-                delta = delta.translate(0, 0, 1);
-        }
         if (keyState.getScancode() == GLFW_KEY_E) {
             delta = delta.scale(1, 1, 0);
             if (keyState.isPressed())
-                delta = delta.translate(0, 0, -1);
+                delta = delta.translate(0, 0, SPEED);
+        }
+        if (keyState.getScancode() == GLFW_KEY_Q) {
+            delta = delta.scale(1, 1, 0);
+            if (keyState.isPressed())
+                delta = delta.translate(0, 0, -SPEED);
         }
     }
 

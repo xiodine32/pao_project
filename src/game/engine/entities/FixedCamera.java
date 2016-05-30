@@ -18,6 +18,10 @@ public class FixedCamera implements Camera {
         this.position = position;
     }
 
+    public Vector3D getPosition() {
+        return position;
+    }
+
     @Override
     public void draw() {
         glPushMatrix();
