@@ -74,14 +74,18 @@ public class SimpleEngine implements Engine {
                 running = false;
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            if (runningScreen != null)
-                runningScreen.tick();
+            while (glfwGetTime() - lastTime > FPS) {
+                lastTime += FPS;
+                if (runningScreen != null)
+                    runningScreen.tick();
+            }
+
 
             if (runningScreen != null)
                 runningScreen.draw();
 
             try {
-                Thread.sleep((long) (1000 * FPS));
+                Thread.sleep((long) (1000 * FPS) / 2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
