@@ -15,9 +15,9 @@ public final class CSVSingleton {
     private HashMap<String, HashMap<String, String>> csvHashMap = new HashMap<>();
 
     private CSVSingleton() {
-        load("buttons.csv");
         load("tanks.csv");
         load("tiles.csv");
+        load("bullets.csv");
     }
 
     public static CSVSingleton getInstance() {

@@ -11,6 +11,8 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -20,16 +22,20 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Tank extends Sprite implements KeyboardListener, Externalizable, Collidable {
 
-    static final double MOVE_DELTA = 0.03;
-    static final double ROTATION_DELTA = 0.05;
+    private static final double MOVE_DELTA = 0.03;
+    private static final double ROTATION_DELTA = 0.05;
 
     private Vector2D position = new Vector2D(0, 0);
+    private Vector2D size = new Vector2D(1, 1);
     private double rotation;
 
     private KeySem keyW = new KeySem(GLFW_KEY_W);
     private KeySem keyS = new KeySem(GLFW_KEY_S);
     private KeySem keyA = new KeySem(GLFW_KEY_A);
     private KeySem keyD = new KeySem(GLFW_KEY_D);
+    private KeySem keySpace = new KeySem(GLFW_KEY_SPACE);
+
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
 
     public Tank() {
@@ -43,6 +49,7 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
         glRotated((rotation - Math.PI / 2) / Math.PI * 180, 0, 0, 1);
         super.draw();
         glPopMatrix();
+        bullets.forEach(Bullet::draw);
     }
 
 
@@ -62,20 +69,33 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
             delta--;
         }
 
+        if (keySpace.isPressed()) {
+//            keySpace.disablePressUntilUp();
+
+            bullets.add(new Bullet(
+                    position.translate(Math.cos(rotation) * 1.2, Math.sin(rotation) * 1.2)
+                    , new Vector2D(
+                    Math.cos(rotation),
+                    Math.sin(rotation))));
+        }
+
         Vector2D oldPosition = position;
         position = position.translate(
                 delta * MOVE_DELTA * Math.cos(rotation),
                 0
         );
-        if (collisionDetector.collidesWithWorld(position))
+        if (collisionDetector.collidesWithWorld(position, size))
             position = oldPosition;
 
         oldPosition = position;
         position = position.translate(0,
                 delta * MOVE_DELTA * Math.sin(rotation)
         );
-        if (collisionDetector.collidesWithWorld(position))
+        if (collisionDetector.collidesWithWorld(position, size))
             position = oldPosition;
+
+        bullets.forEach(bullet -> bullet.tick(collisionDetector));
+        bullets = new ArrayList<>(bullets.stream().filter(Bullet::isAlive).collect(Collectors.toList()));
     }
 
     @Override
@@ -84,6 +104,7 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
         keyS.handle(keyState);
         keyA.handle(keyState);
         keyD.handle(keyState);
+        keySpace.handle(keyState);
     }
 
     @Override
@@ -94,7 +115,7 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
     }
 
-    public Vector2D getPosition() {
+    Vector2D getPosition() {
         return position;
     }
 

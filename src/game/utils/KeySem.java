@@ -24,4 +24,7 @@ public class KeySem {
     }
 
 
+    public void disablePressUntilUp() {
+        pressed = false;
+    }
 }

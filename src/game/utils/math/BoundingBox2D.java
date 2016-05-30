@@ -1,10 +1,12 @@
 package game.utils.math;
 
+import java.io.Serializable;
+
 /**
  * Created by NeaguR on 30.05.2016.
  * PROJECT pao_project
  */
-public class BoundingBox2D {
+public class BoundingBox2D implements Serializable {
     private final double x;
     private final double y;
     private final double xEnd;

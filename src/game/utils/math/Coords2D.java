@@ -1,17 +1,19 @@
 package game.utils.math;
 
+import java.io.Serializable;
+
 /**
  * pao_project - xiodine.
  * 4/10/2016
  */
-public class Coords2D {
+public class Coords2D implements Serializable {
     private double x;
     private double y;
 
-    public Coords2D() {
+    Coords2D() {
     }
 
-    public Coords2D(double x, double y) {
+    Coords2D(double x, double y) {
         this.x = x;
         this.y = y;
     }

@@ -23,15 +23,15 @@ public class BoundingBoxCollisionDetector implements CollisionDetector {
         return false;
     }
 
-    public boolean collidesWithWorld(Vector2D playerPosition) {
+    public boolean collidesWithWorld(Vector2D playerPosition, Vector2D playerSize) {
         Real2D position = new Real2D(playerPosition.getX(), playerPosition.getY());
         final MapBindings singleton = MapBindings.getSingleton();
 
         BoundingBox2D playerBoundingBox2D = new BoundingBox2D(
-                position.getRealX() + 0.05,
-                position.getRealY() + 0.05,
-                0.9,
-                0.9);
+                position.getRealX() + 0.05 + (1 - playerSize.getX()) / 2.0,
+                position.getRealY() + 0.05 + (1 - playerSize.getY()) / 2.0,
+                playerSize.getX() - 0.1,
+                playerSize.getY() - 0.1);
 
         for (double x = -1; x <= 1; x += 0.5) {
             for (double y = -1; y <= 1; y += 0.5) {

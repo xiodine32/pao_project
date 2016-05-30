@@ -16,8 +16,8 @@ public class Sprite implements Entity {
     private final int spriteWidth;
     private final int spriteHeight;
     private final String path;
+    protected Texture texture;
     private int sprite;
-    private Texture texture;
     private DisplayList[] lists;
 
     public Sprite(String type, String internalName) {
@@ -37,10 +37,7 @@ public class Sprite implements Entity {
         lists[sprite].gl();
     }
 
-    @Override
-    public void load() {
-        texture = TextureWrapper.loadTexture(path);
-
+    protected void loadDisplayLists() {
         lists = new DisplayList[texture.getWidth() / spriteWidth * (texture.getHeight() / spriteHeight)];
         int n = texture.getWidth() / spriteWidth;
         int m = texture.getHeight() / spriteHeight;
@@ -67,13 +64,25 @@ public class Sprite implements Entity {
         }
     }
 
+    protected void loadTexture() {
+        texture = TextureWrapper.loadTexture(path);
+    }
+    @Override
+    public void load() {
+        loadTexture();
+        loadDisplayLists();
+    }
+
     @Override
     public void unload() {
         texture.delete();
     }
 
+    public int getSprite() {
+        return sprite;
+    }
+
     public void setSprite(int sprite) {
         this.sprite = sprite;
     }
-
 }

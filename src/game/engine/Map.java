@@ -10,7 +10,6 @@ public class Map {
     public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
     private byte[][] map = new byte[WIDTH][HEIGHT];
-
     public Map() {
         generateNewMap();
     }
@@ -27,12 +26,16 @@ public class Map {
                     this.map[i][j] = 1;
                     continue;
                 }
-                this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 2 : 0);
-                if (this.map[i][j] == 0)
-                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 3 : 0);
-                if (this.map[i][j] == 0)
-                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 4 : 0);
+                if (i > 5 && j > 5) {
+                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 2 : 0);
+                    if (this.map[i][j] == 0)
+                        this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 3 : 0);
+                    if (this.map[i][j] == 0)
+                        this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 4 : 0);
+                }
             }
+//        map[1][1] = 1;
+
     }
 
     public byte getElement(int x, int y) {

@@ -10,5 +10,5 @@ import game.utils.math.Vector3D;
 public interface CollisionDetector {
     boolean collides(Vector3D centerA, Vector3D centerB);
 
-    boolean collidesWithWorld(Vector2D playerPosition);
+    boolean collidesWithWorld(Vector2D playerPosition, Vector2D playerSize);
 }

@@ -1,10 +1,12 @@
 package game.utils.math;
 
+import java.io.Serializable;
+
 /**
  * Created on 09/05/16.
  * pao_project - game.utils.math - Real2D.
  */
-public class Real2D extends Vector2D {
+public class Real2D extends Vector2D implements Serializable {
 
     private final static double STEP = 1;
 
