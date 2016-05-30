@@ -11,8 +11,6 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -22,21 +20,19 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Tank extends Sprite implements KeyboardListener, Externalizable, Collidable {
 
-    private static final double MOVE_DELTA = 0.03;
+    public static final Vector2D SIZE = new Vector2D(1, 1);
+    private static final int BULLETS_COUNT = 5;
+    private static final double MOVE_DELTA = 0.08;
     private static final double ROTATION_DELTA = 0.05;
-
+    public double deadTick = 0;
     private Vector2D position = new Vector2D(0, 0);
-    private Vector2D size = new Vector2D(1, 1);
-    private double rotation;
-
+    private double rotation = 90;
     private KeySem keyW = new KeySem(GLFW_KEY_W);
     private KeySem keyS = new KeySem(GLFW_KEY_S);
     private KeySem keyA = new KeySem(GLFW_KEY_A);
     private KeySem keyD = new KeySem(GLFW_KEY_D);
     private KeySem keySpace = new KeySem(GLFW_KEY_SPACE);
-
-    private ArrayList<Bullet> bullets = new ArrayList<>();
-
+    private boolean dead = false;
 
     public Tank() {
         super("tanks", "test");
@@ -45,11 +41,16 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
     @Override
     public void draw() {
         glPushMatrix();
+        glColor4d(1, 1, 1, 1);
+        if (dead)
+            glColor4d(1, 0, 0, 1);
+
         glTranslated(position.getX(), position.getY(), 0.1);
         glRotated((rotation - Math.PI / 2) / Math.PI * 180, 0, 0, 1);
         super.draw();
         glPopMatrix();
-        bullets.forEach(Bullet::draw);
+        glColor4d(1, 1, 1, 1);
+
     }
 
 
@@ -69,10 +70,10 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
             delta--;
         }
 
-        if (keySpace.isPressed()) {
-//            keySpace.disablePressUntilUp();
+        if (keySpace.isPressed() && BulletManager.getInstance().getBulletCount() < BULLETS_COUNT) {
+            keySpace.disablePressUntilUp();
 
-            bullets.add(new Bullet(
+            BulletManager.getInstance().add(new Bullet(
                     position.translate(Math.cos(rotation) * 1.2, Math.sin(rotation) * 1.2)
                     , new Vector2D(
                     Math.cos(rotation),
@@ -84,18 +85,24 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
                 delta * MOVE_DELTA * Math.cos(rotation),
                 0
         );
-        if (collisionDetector.collidesWithWorld(position, size))
+        if (collisionDetector.collidesWithWorld(position, SIZE))
             position = oldPosition;
 
         oldPosition = position;
         position = position.translate(0,
                 delta * MOVE_DELTA * Math.sin(rotation)
         );
-        if (collisionDetector.collidesWithWorld(position, size))
+        if (collisionDetector.collidesWithWorld(position, SIZE))
             position = oldPosition;
 
-        bullets.forEach(bullet -> bullet.tick(collisionDetector));
-        bullets = new ArrayList<>(bullets.stream().filter(Bullet::isAlive).collect(Collectors.toList()));
+        if (BulletManager.getInstance().collidesWith(position, collisionDetector)) {
+            dead = true;
+            deadTick = glfwGetTime();
+        }
+
+        if (dead && glfwGetTime() - deadTick > 5) {
+            dead = false;
+        }
     }
 
     @Override

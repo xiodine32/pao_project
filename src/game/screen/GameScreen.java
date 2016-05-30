@@ -4,6 +4,7 @@ import game.engine.BoundingBoxCollisionDetector;
 import game.engine.KeyboardEventListener;
 import game.engine.Map;
 import game.engine.MapDrawerAdaptor;
+import game.engine.entities.BulletManager;
 import game.engine.entities.FollowingCamera;
 import game.engine.entities.Tank;
 import game.interfaces.CollisionDetector;
@@ -75,12 +76,14 @@ public class GameScreen implements Screen {
         mobileCamera.draw();
         mapDrawerAdaptor.draw();
         tank.draw();
+        BulletManager.getInstance().draw();
         mobileCamera.drawEnd();
     }
 
     @Override
     public void tick() {
         mapDrawerAdaptor.tick();
+        BulletManager.getInstance().tick(collisionDetector);
         tank.tick(collisionDetector);
         mobileCamera.tick();
     }

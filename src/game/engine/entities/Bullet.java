@@ -19,6 +19,8 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Bullet extends Sprite implements Collidable, Externalizable {
 
+    public static final Vector2D SIZE = new Vector2D(0.5, 0.5);
+
     private static final double MOVE_DELTA = 0.1;
     private static final double TIME = 10;
     private static Texture loadedTexture = null;
@@ -27,7 +29,6 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
     private double animationLeft = TIME;
     private double lastTick = -1;
     private boolean alive = true;
-    private Vector2D size = new Vector2D(0.5, 0.5);
     private Vector2D position;
     private Vector2D velocity;
     private boolean loaded = false;
@@ -66,7 +67,7 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
                 MOVE_DELTA * velocity.getX(),
                 0
         );
-        if (collisionDetector.collidesWithWorld(position, size)) {
+        if (collisionDetector.collidesWithWorld(position, SIZE)) {
             position = oldPosition;
             velocity = velocity.scale(-1, 1);
         }
@@ -75,13 +76,13 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
         position = position.translate(0,
                 MOVE_DELTA * velocity.getY()
         );
-        if (collisionDetector.collidesWithWorld(position, size)) {
+        if (collisionDetector.collidesWithWorld(position, SIZE)) {
             position = oldPosition;
             velocity = velocity.scale(1, -1);
         }
-//        if (oldOld.equals(position)) {
-//            alive = false;
-//        }
+        if (oldOld.equals(position)) {
+            alive = false;
+        }
     }
 
     @Override
@@ -105,9 +106,9 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
         if (timeLeft > 1) {
             glColor4d(1, timeLeft / TIME, timeLeft / TIME, 1);
         }
-//        glTranslated(-size.getX(), size.getY(), 0);
+//        glTranslated(-SIZE.getX(), SIZE.getY(), 0);
         position.glTranslate();
-        glScaled(size.getX(), size.getY(), 1);
+        glScaled(SIZE.getX(), SIZE.getY(), 1);
         super.draw();
         glPopMatrix();
         glColor4d(1, 1, 1, 1);
@@ -134,4 +135,7 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
         return alive;
     }
 
+    public Vector2D getPosition() {
+        return position;
+    }
 }

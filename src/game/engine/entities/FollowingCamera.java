@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 public class FollowingCamera implements Camera, Logic, KeyboardListener {
 
     private Tank followingTank;
-    private Vector3D realPosition = new Vector3D(0, 0, -10);
+    private Vector3D realPosition = new Vector3D(0, 0, -15);
 
     private KeySem keyQ = new KeySem(GLFW_KEY_Q);
     private KeySem keyE = new KeySem(GLFW_KEY_E);

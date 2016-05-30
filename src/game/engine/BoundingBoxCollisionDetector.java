@@ -4,7 +4,6 @@ import game.interfaces.CollisionDetector;
 import game.utils.math.BoundingBox2D;
 import game.utils.math.Real2D;
 import game.utils.math.Vector2D;
-import game.utils.math.Vector3D;
 
 /**
  * Created by NeaguR on 30.05.2016.
@@ -19,19 +18,19 @@ public class BoundingBoxCollisionDetector implements CollisionDetector {
         this.map = map;
     }
 
-    public boolean collides(Vector3D centerA, Vector3D centerB) {
-        return false;
+    public boolean collidesWithBullet(Vector2D playerPosition, Vector2D playerSize, Vector2D bulletPosition, Vector2D bulletSize) {
+        BoundingBox2D playerBoundingBox2D = getBoundingBox2D(playerSize, playerPosition);
+        Real2D positionBullet = new Real2D(bulletPosition.getX(), bulletPosition.getY());
+        BoundingBox2D boundingBox2D = new BoundingBox2D(positionBullet.getX(), positionBullet.getY(), bulletSize.getX(), bulletSize.getY());
+        return playerBoundingBox2D.collidesWith(boundingBox2D);
     }
 
     public boolean collidesWithWorld(Vector2D playerPosition, Vector2D playerSize) {
-        Real2D position = new Real2D(playerPosition.getX(), playerPosition.getY());
         final MapBindings singleton = MapBindings.getSingleton();
 
-        BoundingBox2D playerBoundingBox2D = new BoundingBox2D(
-                position.getRealX() + 0.05 + (1 - playerSize.getX()) / 2.0,
-                position.getRealY() + 0.05 + (1 - playerSize.getY()) / 2.0,
-                playerSize.getX() - 0.1,
-                playerSize.getY() - 0.1);
+        Real2D position = new Real2D(playerPosition.getX(), playerPosition.getY());
+
+        BoundingBox2D playerBoundingBox2D = getBoundingBox2D(playerSize, playerPosition);
 
         for (double x = -1; x <= 1; x += 0.5) {
             for (double y = -1; y <= 1; y += 0.5) {
@@ -47,5 +46,15 @@ public class BoundingBoxCollisionDetector implements CollisionDetector {
         }
 
         return false;
+    }
+
+    private BoundingBox2D getBoundingBox2D(Vector2D playerSize, Vector2D playerPosition) {
+        Real2D position = new Real2D(playerPosition.getX(), playerPosition.getY());
+
+        return new BoundingBox2D(
+                position.getRealX() + 0.05 + (1 - playerSize.getX()) / 2.0,
+                position.getRealY() + 0.05 + (1 - playerSize.getY()) / 2.0,
+                playerSize.getX() - 0.1,
+                playerSize.getY() - 0.1);
     }
 }
