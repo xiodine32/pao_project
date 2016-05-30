@@ -4,10 +4,7 @@ import game.engine.entities.Sprite;
 import game.interfaces.Drawable;
 import game.interfaces.Entity;
 import game.interfaces.Logic;
-import game.interfaces.Texture;
-import game.utils.CSVSingleton;
 import game.utils.DisplayList;
-import game.utils.TextureWrapper;
 
 import java.util.ArrayList;
 
@@ -25,8 +22,7 @@ public class MapDrawerAdaptor implements Drawable, Logic, Entity {
 
     public MapDrawerAdaptor(Map map) {
         this.map = map;
-        sprites = new ArrayList<>();
-        sprites.add(new Sprite("tiles", "bricks"));
+        sprites = MapBindings.getSingleton().getSpriteArrayList();
     }
 
     @Override
@@ -42,19 +38,21 @@ public class MapDrawerAdaptor implements Drawable, Logic, Entity {
     @Override
     public void load() {
         sprites.forEach(Sprite::load);
+
+        final MapBindings singleton = MapBindings.getSingleton();
         mapDisplay = new DisplayList(() -> {
             for (int i = 0; i < Map.WIDTH; i++)
-            for (int j = 0; j < Map.HEIGHT; j++) {
-                final byte element = map.getElement(i, j);
-                if (element >= 1 && element <= 4) {
-                    Sprite sprite = sprites.get(0);
-                    sprite.setSprite(element - 1);
+                for (int j = 0; j < Map.HEIGHT; j++) {
+                    final byte element = map.getElement(i, j);
+                    Sprite sprite = singleton.getSpriteForMapID(element);
+                    if (sprite == null)
+                        continue;
+                    sprite.setSprite(singleton.getSpriteSpriteForMapID(element));
                     glPushMatrix();
-                    glTranslated((double)i, (double)j, 0);
+                    glTranslated((double) i, (double) -j, 0);
                     sprite.draw();
                     glPopMatrix();
                 }
-            }
         });
     }
 

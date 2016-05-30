@@ -6,10 +6,10 @@ package game.utils.math;
  */
 public class Real2D extends Vector2D {
 
-    private final static double STEP = 0.2;
+    private final static double STEP = 1;
 
     public Real2D(double x, double y) {
-        super(x * STEP, y * STEP);
+        super(x * STEP, -y * STEP);
     }
 
     public Real2D() {
@@ -17,11 +17,11 @@ public class Real2D extends Vector2D {
     }
 
     public Real2D translate(double deltaX, double deltaY) {
-        return new Real2D(getX() / STEP + deltaX, getY() / STEP + deltaY);
+        return new Real2D(getX() / STEP + deltaX, -getY() / STEP - deltaY);
     }
 
     public Real2D scale(double deltaX, double deltaY) {
-        return new Real2D(getX() / STEP * deltaX, getY() / STEP * deltaY);
+        return new Real2D(getX() / STEP * deltaX, -getY() / STEP * deltaY);
     }
 
     @Override
@@ -37,5 +37,13 @@ public class Real2D extends Vector2D {
     @Override
     public String toString() {
         return "Real2D{} " + super.toString();
+    }
+
+    public double getRealX() {
+        return getX();
+    }
+
+    public double getRealY() {
+        return getY();
     }
 }

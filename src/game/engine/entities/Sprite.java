@@ -1,14 +1,10 @@
 package game.engine.entities;
 
 import game.interfaces.Entity;
-import game.interfaces.Logic;
 import game.interfaces.Texture;
 import game.utils.CSVSingleton;
 import game.utils.DisplayList;
 import game.utils.TextureWrapper;
-import game.utils.math.Vector2D;
-
-import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -22,7 +18,7 @@ public class Sprite implements Entity {
     private final String path;
     private int sprite;
     private Texture texture;
-    private DisplayList [] lists;
+    private DisplayList[] lists;
 
     public Sprite(String type, String internalName) {
         final String result = CSVSingleton.getInstance().get(type, internalName);
@@ -74,21 +70,8 @@ public class Sprite implements Entity {
         texture.delete();
     }
 
-
-    public int getSprite() {
-        return sprite;
-    }
-
     public void setSprite(int sprite) {
         this.sprite = sprite;
-    }
-
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
     }
 
 }

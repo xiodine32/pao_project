@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 public class FollowingCamera implements Camera, Logic {
 
     private Tank followingTank;
-    private Vector3D realPosition = new Vector3D(0, 0, -1);;
+    private Vector3D realPosition = new Vector3D(0, 0, -1);
 
     public FollowingCamera(Tank followingTank) {
         this.followingTank = followingTank;

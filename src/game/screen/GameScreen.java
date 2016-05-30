@@ -1,15 +1,16 @@
 package game.screen;
 
+import game.engine.BoundingBoxCollisionDetector;
 import game.engine.KeyboardEventListener;
 import game.engine.Map;
 import game.engine.MapDrawerAdaptor;
+import game.engine.entities.CollisionDetector;
 import game.engine.entities.FollowingCamera;
-import game.engine.entities.MobileCamera;
 import game.engine.entities.Tank;
 import game.interfaces.Engine;
 import game.interfaces.KeyboardListener;
 import game.interfaces.Screen;
-import game.utils.math.Vector3D;
+import game.utils.math.Real2D;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -25,10 +26,16 @@ public class GameScreen implements Screen {
     private Map map = new Map();
     private Tank tank = new Tank();
 
+    private CollisionDetector collisionDetector = new BoundingBoxCollisionDetector(map);
+
     private FollowingCamera mobileCamera = new FollowingCamera(tank);
 
     private MapDrawerAdaptor mapDrawerAdaptor = new MapDrawerAdaptor(map);
 
+
+    public GameScreen() {
+        tank.setPosition(new Real2D(1, 1));
+    }
 
     @Override
     public void bindKeys(KeyboardEventListener keyboardEventListener) {
@@ -73,7 +80,7 @@ public class GameScreen implements Screen {
     @Override
     public void tick() {
         mapDrawerAdaptor.tick();
-        tank.tick();
+        tank.tick(collisionDetector);
         mobileCamera.tick();
     }
 }

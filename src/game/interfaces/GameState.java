@@ -6,6 +6,8 @@ package game.interfaces;
  */
 public interface GameState {
     long getType();
+
     String toPacket();
+
     GameState fromPacket();
 }

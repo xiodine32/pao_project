@@ -1,12 +1,10 @@
 package game.engine.entities;
 
 import game.interfaces.KeyboardListener;
-import game.interfaces.Logic;
 import game.utils.KeySem;
 import game.utils.KeyState;
 import game.utils.math.Vector2D;
 
-import java.awt.event.MouseEvent;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -18,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Created on 09/05/16.
  */
-public class Tank extends Sprite implements Logic, KeyboardListener, Externalizable {
+public class Tank extends Sprite implements KeyboardListener, Externalizable, Collidable {
 
     static final double MOVE_DELTA = 0.05;
     static final double ROTATION_DELTA = 0.1;
@@ -26,12 +24,14 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
     private int delta = 0;
     private int deltaRotation = 0;
     private Vector2D position = new Vector2D(0, 0);
+    private Vector2D oldPosition = position;
     private double rotation;
 
     private KeySem keyW = new KeySem(GLFW_KEY_W);
     private KeySem keyS = new KeySem(GLFW_KEY_S);
     private KeySem keyA = new KeySem(GLFW_KEY_A);
     private KeySem keyD = new KeySem(GLFW_KEY_D);
+
 
     public Tank() {
         super("tanks", "test");
@@ -46,8 +46,9 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
         glPopMatrix();
     }
 
+
     @Override
-    public void tick() {
+    public void tick(CollisionDetector collisionDetector) {
         if (keyA.isPressed()) {
             rotation += ROTATION_DELTA;
         }
@@ -62,10 +63,20 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
             delta--;
         }
 
+        oldPosition = position;
         position = position.translate(
                 delta * MOVE_DELTA * Math.cos(rotation),
+                0
+        );
+        if (collisionDetector.collidesWithWorld(position))
+            position = oldPosition;
+
+        oldPosition = position;
+        position = position.translate(0,
                 delta * MOVE_DELTA * Math.sin(rotation)
         );
+        if (collisionDetector.collidesWithWorld(position))
+            position = oldPosition;
     }
 
     @Override
@@ -86,5 +97,9 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
 
     public Vector2D getPosition() {
         return position;
+    }
+
+    public void setPosition(Vector2D position) {
+        this.position = position;
     }
 }

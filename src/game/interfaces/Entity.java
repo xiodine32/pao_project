@@ -7,6 +7,7 @@ package game.interfaces;
 public interface Entity extends Drawable {
 
     void load();
+
     void unload();
 
 }
