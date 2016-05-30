@@ -28,6 +28,10 @@ public class Map {
                     continue;
                 }
                 this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 2 : 0);
+                if (this.map[i][j] == 0)
+                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 3 : 0);
+                if (this.map[i][j] == 0)
+                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 4 : 0);
             }
     }
 

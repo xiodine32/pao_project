@@ -20,7 +20,7 @@ public class MainMenuScreen implements Screen {
 
     private Entity sprite = new Sprite("buttons", "test");
 
-    private MobileCamera camera = new MobileCamera(new Vector3D(0, 0, -2));
+    private MobileCamera camera = new MobileCamera(new Vector3D(0, 0, -1));
 
     private Engine engine;
     private KeyboardListener listener;

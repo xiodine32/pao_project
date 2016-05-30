@@ -1,4 +1,4 @@
-package game.engine.entities;
+package game.interfaces;
 
 import game.utils.math.Vector2D;
 import game.utils.math.Vector3D;

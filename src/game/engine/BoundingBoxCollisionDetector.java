@@ -1,6 +1,6 @@
 package game.engine;
 
-import game.engine.entities.CollisionDetector;
+import game.interfaces.CollisionDetector;
 import game.utils.math.BoundingBox2D;
 import game.utils.math.Real2D;
 import game.utils.math.Vector2D;
@@ -33,8 +33,8 @@ public class BoundingBoxCollisionDetector implements CollisionDetector {
                 0.9,
                 0.9);
 
-        for (double x = -0.5; x <= 1; x += 0.5) {
-            for (double y = -0.5; y <= 1; y += 0.5) {
+        for (double x = -1; x <= 1; x += 0.5) {
+            for (double y = -1; y <= 1; y += 0.5) {
                 int realX = (int) (position.getRealX() + x);
                 int realY = (int) (position.getRealY() + y);
                 final byte element = map.getElement(realX, realY);

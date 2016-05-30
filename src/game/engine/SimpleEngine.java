@@ -42,6 +42,7 @@ public class SimpleEngine implements Engine {
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
         initOpenGLProjection();
         initOpenGLModelView();
     }

@@ -4,9 +4,9 @@ import game.engine.BoundingBoxCollisionDetector;
 import game.engine.KeyboardEventListener;
 import game.engine.Map;
 import game.engine.MapDrawerAdaptor;
-import game.engine.entities.CollisionDetector;
 import game.engine.entities.FollowingCamera;
 import game.engine.entities.Tank;
+import game.interfaces.CollisionDetector;
 import game.interfaces.Engine;
 import game.interfaces.KeyboardListener;
 import game.interfaces.Screen;
@@ -47,12 +47,13 @@ public class GameScreen implements Screen {
         };
         keyboardEventListener.addEventListener(listener);
         keyboardEventListener.addEventListener(tank);
-//        keyboardEventListener.addEventListener(mobileCamera);
+        keyboardEventListener.addEventListener(mobileCamera);
     }
 
     @Override
     public void unbindKeys(KeyboardEventListener keyboardEventListener) {
         keyboardEventListener.removeEventListener(tank);
+        keyboardEventListener.removeEventListener(mobileCamera);
         keyboardEventListener.removeEventListener(listener);
     }
 

@@ -1,4 +1,4 @@
-package game.engine.entities;
+package game.interfaces;
 
 /**
  * Created by NeaguR on 30.05.2016.

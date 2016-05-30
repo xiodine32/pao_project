@@ -1,5 +1,7 @@
 package game.engine.entities;
 
+import game.interfaces.Collidable;
+import game.interfaces.CollisionDetector;
 import game.interfaces.KeyboardListener;
 import game.utils.KeySem;
 import game.utils.KeyState;
@@ -18,13 +20,10 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Tank extends Sprite implements KeyboardListener, Externalizable, Collidable {
 
-    static final double MOVE_DELTA = 0.05;
-    static final double ROTATION_DELTA = 0.1;
+    static final double MOVE_DELTA = 0.03;
+    static final double ROTATION_DELTA = 0.05;
 
-    private int delta = 0;
-    private int deltaRotation = 0;
     private Vector2D position = new Vector2D(0, 0);
-    private Vector2D oldPosition = position;
     private double rotation;
 
     private KeySem keyW = new KeySem(GLFW_KEY_W);
@@ -63,7 +62,7 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
             delta--;
         }
 
-        oldPosition = position;
+        Vector2D oldPosition = position;
         position = position.translate(
                 delta * MOVE_DELTA * Math.cos(rotation),
                 0
