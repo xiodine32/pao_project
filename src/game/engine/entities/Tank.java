@@ -6,6 +6,7 @@ import game.utils.KeySem;
 import game.utils.KeyState;
 import game.utils.math.Vector2D;
 
+import java.awt.event.MouseEvent;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -81,5 +82,9 @@ public class Tank extends Sprite implements Logic, KeyboardListener, Externaliza
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    }
+
+    public Vector2D getPosition() {
+        return position;
     }
 }

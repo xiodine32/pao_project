@@ -8,20 +8,21 @@ import game.utils.DisplayList;
 import game.utils.TextureWrapper;
 import game.utils.math.Vector2D;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 09/05/16.
  */
-public class Sprite implements Entity, Logic {
+public class Sprite implements Entity {
 
     private final int spriteWidth;
     private final int spriteHeight;
     private final String path;
-    protected Vector2D location = new Vector2D(0, 0);
     private int sprite;
     private Texture texture;
-    private DisplayList listID;
+    private DisplayList [] lists;
 
     public Sprite(String type, String internalName) {
         final String result = CSVSingleton.getInstance().get(type, internalName);
@@ -37,24 +38,35 @@ public class Sprite implements Entity, Logic {
     @Override
     public void draw() {
         texture.bind();
-        listID.gl();
+        lists[sprite].gl();
     }
 
     @Override
     public void load() {
         texture = TextureWrapper.loadTexture(path);
-        listID = new DisplayList(() -> {
-            glBegin(GL_QUADS);
-            glTexCoord2d(0, 0);
-            glVertex2d(-1, -1);
-            glTexCoord2d(0, 1);
-            glVertex2d(-1, 1);
-            glTexCoord2d(1, 1);
-            glVertex2d(1, 1);
-            glTexCoord2d(1, 0);
-            glVertex2d(1, -1);
-            glEnd();
-        });
+
+        lists = new DisplayList[texture.getWidth() / spriteWidth * (texture.getHeight() / spriteHeight)];
+        int n = texture.getWidth() / spriteWidth;
+        int m = texture.getHeight() / spriteHeight;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int k = i * n + j;
+                int finalI = i;
+                int finalJ = j;
+                lists[k] = new DisplayList(() -> {
+                    glBegin(GL_QUADS);
+                    glTexCoord2d((finalI) / (double) n, (finalJ) / (double) m);
+                    glVertex3d(-0.5, -0.5, 0);
+                    glTexCoord2d((finalI) / (double) n, (finalJ + 1) / (double) m);
+                    glVertex3d(-0.5, 0.5, 0);
+                    glTexCoord2d((finalI + 1) / (double) n, (finalJ + 1) / (double) m);
+                    glVertex3d(0.5, 0.5, 0);
+                    glTexCoord2d((finalI + 1) / (double) n, (finalJ) / (double) m);
+                    glVertex3d(0.5, -0.5, 0);
+                    glEnd();
+                });
+            }
+        }
     }
 
     @Override
@@ -62,6 +74,14 @@ public class Sprite implements Entity, Logic {
         texture.delete();
     }
 
+
+    public int getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(int sprite) {
+        this.sprite = sprite;
+    }
 
     public int getSpriteWidth() {
         return spriteWidth;
@@ -71,8 +91,4 @@ public class Sprite implements Entity, Logic {
         return spriteHeight;
     }
 
-    @Override
-    public void tick() {
-
-    }
 }

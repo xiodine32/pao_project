@@ -3,6 +3,7 @@ package game.screen;
 import game.engine.KeyboardEventListener;
 import game.engine.Map;
 import game.engine.MapDrawerAdaptor;
+import game.engine.entities.FollowingCamera;
 import game.engine.entities.MobileCamera;
 import game.engine.entities.Tank;
 import game.interfaces.Engine;
@@ -24,7 +25,7 @@ public class GameScreen implements Screen {
     private Map map = new Map();
     private Tank tank = new Tank();
 
-    private MobileCamera mobileCamera = new MobileCamera(new Vector3D(-20, -20, -40));
+    private FollowingCamera mobileCamera = new FollowingCamera(tank);
 
     private MapDrawerAdaptor mapDrawerAdaptor = new MapDrawerAdaptor(map);
 
@@ -71,8 +72,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void tick() {
-        mobileCamera.tick();
         mapDrawerAdaptor.tick();
         tank.tick();
+        mobileCamera.tick();
     }
 }
