@@ -1,22 +1,15 @@
 package game.interfaces;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
- * pao_project - xiodine.
- * 4/10/2016
+ * Created by Xiodine on 31/05/2016.
+ * pao_project
  */
 public interface MultiplayerUser {
+    void receive(InputStream in) throws IOException, ClassNotFoundException;
 
-    /**
-     * Sends packet to other user.
-     *
-     * @return string
-     */
-    String sendPacket();
-
-    /**
-     * Handles tick packet from other user.
-     *
-     * @param packet string
-     */
-    void handlePacket(String packet);
+    void send(OutputStream in, boolean isFirst) throws IOException, ClassNotFoundException;
 }

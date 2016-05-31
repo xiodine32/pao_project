@@ -25,9 +25,11 @@ public class ServerClient extends Thread {
         try {
             InputStream in = client.getInputStream();
             OutputStream out = client.getOutputStream();
+            boolean isFirst = true;
             while (Server.RUNNING) {
-                MultiplayerLogic.singleton.send(out);
+                MultiplayerLogic.singleton.send(out, isFirst);
                 MultiplayerLogic.singleton.receive(in);
+                isFirst = false;
             }
         } catch (Exception e) {
             e.printStackTrace();

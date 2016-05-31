@@ -1,6 +1,8 @@
 package game.multiplayer;
 
 import game.engine.Map;
+import game.interfaces.Multiplayer;
+import game.interfaces.MultiplayerUser;
 import game.screen.GameScreen;
 import game.utils.Debug;
 
@@ -42,10 +44,9 @@ public class MultiplayerLogic implements MultiplayerUser {
     }
 
     @Override
-    public void send(OutputStream in) throws IOException, ClassNotFoundException {
+    public void send(OutputStream in, boolean isFirst) throws IOException, ClassNotFoundException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(in);
-        if (firstContact) {
-            firstContact = false;
+        if (isFirst) {
             Debug.l("sent first contact");
             objectOutputStream.writeInt(MultiplayerState.SEND_MAP.getState());
             objectOutputStream.writeObject(gameScreen.getMap());

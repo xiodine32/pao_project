@@ -1,5 +1,7 @@
 package game.multiplayer;
 
+import game.interfaces.Multiplayer;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,14 +17,22 @@ public class Server extends Thread implements Multiplayer {
 
     @Override
     public void run() {
+
+        ServerSocket serverSocket;
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-            while (RUNNING) {
-                Socket socket = serverSocket.accept();
-                new ServerClient(this, socket);
-            }
+            serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
             e.printStackTrace();
+            return;
+        }
+
+        while (RUNNING) {
+            try {
+                Socket socket = serverSocket.accept();
+                new ServerClient(this, socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

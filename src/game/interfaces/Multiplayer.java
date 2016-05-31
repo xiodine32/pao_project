@@ -1,4 +1,4 @@
-package game.multiplayer;
+package game.interfaces;
 
 /**
  * Created by Xiodine on 31/05/2016.
