@@ -24,10 +24,6 @@ public class BulletManager implements Collidable, Drawable {
         return instance;
     }
 
-    public void setOtherBullets(ArrayList<Bullet> otherBullets) {
-        this.otherBullets = otherBullets;
-    }
-
     public void add(Bullet bullet) {
         bullets.add(bullet);
     }
@@ -41,7 +37,6 @@ public class BulletManager implements Collidable, Drawable {
         bullets.forEach(bullet -> bullet.tick(collisionDetector));
         bullets = new ArrayList<>(bullets.stream().filter(Bullet::isAlive).collect(Collectors.toList()));
     }
-
 
     @Override
     public void draw() {
@@ -59,5 +54,17 @@ public class BulletManager implements Collidable, Drawable {
                 return true;
         }
         return false;
+    }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public ArrayList<Bullet> getOtherBullets() {
+        return otherBullets;
+    }
+
+    public void setOtherBullets(ArrayList<Bullet> otherBullets) {
+        this.otherBullets = otherBullets;
     }
 }

@@ -8,8 +8,6 @@ public interface Texture {
 
     void bind();
 
-    void unbind();
-
     void delete();
 
     int getWidth();

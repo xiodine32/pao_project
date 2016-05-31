@@ -21,6 +21,7 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
     public static transient final Vector2D SIZE = new Vector2D(1, 1);
     private static transient final int BULLETS_COUNT = 5;
     private static transient final double MOVE_DELTA = 0.08;
+    private static transient final double MOVE_BACKWADS = 0.8;
     private static transient final double ROTATION_DELTA = 0.05;
     private static transient Texture texture = null;
     public double deadTick = 0;
@@ -97,6 +98,8 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
         if (keyS.isPressed()) {
             delta--;
         }
+        if (delta < 0)
+            delta *= MOVE_BACKWADS;
 
         if (keySpace.isPressed() && BulletManager.getInstance().getBulletCount() < BULLETS_COUNT) {
             keySpace.disablePressUntilUp();

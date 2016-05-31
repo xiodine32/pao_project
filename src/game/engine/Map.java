@@ -8,8 +8,8 @@ import java.util.Random;
  * pao_project
  */
 public class Map implements Serializable {
-    public static final int WIDTH = 50;
-    public static final int HEIGHT = 50;
+    public static final int WIDTH = 25;
+    public static final int HEIGHT = 25;
     private byte[][] map = new byte[WIDTH][HEIGHT];
     public Map() {
         generateNewMap();
@@ -28,11 +28,11 @@ public class Map implements Serializable {
                     continue;
                 }
                 if (i > 5 && j > 5) {
-                    this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 2 : 0);
+                    this.map[i][j] = (byte) (random.nextInt(20) == 5 ? 2 : 0);
                     if (this.map[i][j] == 0)
-                        this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 3 : 0);
+                        this.map[i][j] = (byte) (random.nextInt(20) == 5 ? 3 : 0);
                     if (this.map[i][j] == 0)
-                        this.map[i][j] = (byte) (random.nextInt(10) == 5 ? 4 : 0);
+                        this.map[i][j] = (byte) (random.nextInt(20) == 5 ? 4 : 0);
                 }
             }
 //        map[1][1] = 1;

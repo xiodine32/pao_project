@@ -66,6 +66,8 @@ public class MainMenuScreen implements Screen {
             String dialog = "";
             if (multiplayer instanceof Client)
                 dialog = JOptionPane.showInputDialog("IP");
+            if (dialog.isEmpty())
+                dialog = "localhost";
             multiplayer.init(dialog);
             multiplayer.setup();
             multiplayer.start();

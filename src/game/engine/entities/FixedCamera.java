@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
  * Created on 09/05/16.
  * Class ${CLASSNAME}.
  */
-public class FixedCamera implements Camera {
+public abstract class FixedCamera implements Camera {
 
     protected Vector3D position;
 

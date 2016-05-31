@@ -1,6 +1,8 @@
 package game.multiplayer;
 
 import game.engine.Map;
+import game.engine.entities.Bullet;
+import game.engine.entities.BulletManager;
 import game.engine.entities.Tank;
 import game.interfaces.Multiplayer;
 import game.interfaces.MultiplayerUser;
@@ -9,6 +11,7 @@ import game.utils.Debug;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created by Xiodine on 31/05/2016.
@@ -41,8 +44,17 @@ public class MultiplayerLogic implements MultiplayerUser {
             return;
         }
 
+        // server received data
         if (state.getState() == MultiplayerState.SEND_ME.getState()) {
             Tank player = (Tank) objectInputStream.readObject();
+            ArrayList bullets = (ArrayList) objectInputStream.readObject();
+            ArrayList<Bullet> newAdded = new ArrayList<>();
+            for (Object obj : bullets) {
+                Bullet bullet = (Bullet) obj;
+                bullet.setUID(uid);
+                newAdded.add(bullet);
+            }
+
             player.setUID(uid);
 
             boolean found = false;
@@ -61,15 +73,30 @@ public class MultiplayerLogic implements MultiplayerUser {
 
             synchronized (GameScreen.class) {
                 gameScreen.otherTanks = tanks;
+                ArrayList<Bullet> newBullets = new ArrayList<>(BulletManager.getInstance().getOtherBullets().stream().filter(o -> o.getUID() != uid).collect(Collectors.toList()));
+                newBullets.addAll(newAdded);
+                BulletManager.getInstance().setOtherBullets(newBullets);
             }
             return;
         }
 
+        // client received data
         if (state.getState() == MultiplayerState.SEND_OTHERS.getState()) {
             ArrayList<Tank> others = new ArrayList<>();
             Tank server = (Tank) objectInputStream.readObject();
             ArrayList data = (ArrayList) objectInputStream.readObject();
+
+
             int clientUID = objectInputStream.readInt();
+
+            ArrayList dataBullets = (ArrayList) objectInputStream.readObject();
+            ArrayList<Bullet> bullets = new ArrayList<>();
+            for (Object obj : dataBullets) {
+                final Bullet bullet = (Bullet) obj;
+                if (bullet.getUID() != clientUID)
+                    bullets.add(bullet);
+            }
+
             for (Object obj : data) {
                 final Tank tank = (Tank) obj;
                 if (tank.getUID() == clientUID)
@@ -79,6 +106,7 @@ public class MultiplayerLogic implements MultiplayerUser {
             others.add(server);
             synchronized (GameScreen.class) {
                 gameScreen.otherTanks = others;
+                BulletManager.getInstance().setOtherBullets(bullets);
             }
             return;
         }
@@ -102,6 +130,7 @@ public class MultiplayerLogic implements MultiplayerUser {
         if (!threadUser.isServer()) {
             objectOutputStream.writeInt(MultiplayerState.SEND_ME.getState());
             objectOutputStream.writeObject(tank);
+            objectOutputStream.writeObject(BulletManager.getInstance().getBullets());
             objectOutputStream.flush();
             return;
         }
@@ -110,6 +139,9 @@ public class MultiplayerLogic implements MultiplayerUser {
         objectOutputStream.writeObject(tank);
         objectOutputStream.writeObject(gameScreen.otherTanks);
         objectOutputStream.writeInt(uid);
+        ArrayList<Bullet> others = new ArrayList<>(BulletManager.getInstance().getOtherBullets().stream().filter(bullet -> bullet.getUID() != uid).collect(Collectors.toList()));
+        others.addAll(BulletManager.getInstance().getBullets());
+        objectOutputStream.writeObject(others);
         objectOutputStream.flush();
     }
 

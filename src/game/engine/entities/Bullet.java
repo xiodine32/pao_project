@@ -5,10 +5,7 @@ import game.interfaces.CollisionDetector;
 import game.interfaces.Texture;
 import game.utils.math.Vector2D;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.Serializable;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.*;
@@ -17,21 +14,24 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by Xiodine on 30/05/2016.
  * pao_project
  */
-public class Bullet extends Sprite implements Collidable, Externalizable {
+public class Bullet extends Sprite implements Collidable, Serializable {
 
-    public static final Vector2D SIZE = new Vector2D(0.5, 0.5);
+    public transient static final Vector2D SIZE = new Vector2D(0.5, 0.5);
+    private transient static final double MOVE_DELTA = 0.1;
+    private transient static final double TIME = 10;
+    private transient static Texture loadedTexture = null;
+    private transient static boolean loadedTextureBool = false;
 
-    private static final double MOVE_DELTA = 0.1;
-    private static final double TIME = 10;
-    private static Texture loadedTexture = null;
-    private static boolean loadedTextureBool = false;
+
     private double timeLeft = TIME;
     private double animationLeft = TIME;
-    private double lastTick = -1;
+    private transient double lastTick = -1;
+    private transient boolean loaded = false;
     private boolean alive = true;
+
     private Vector2D position;
     private Vector2D velocity;
-    private boolean loaded = false;
+    private int UID;
 
     public Bullet(Vector2D position, Vector2D velocity) {
         super("bullets", "bullet");
@@ -39,8 +39,12 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
         this.position = position;
     }
 
-    public Bullet() {
-        super("bullets", "test");
+    public int getUID() {
+        return UID;
+    }
+
+    public void setUID(int UID) {
+        this.UID = UID;
     }
 
     @Override
@@ -113,23 +117,6 @@ public class Bullet extends Sprite implements Collidable, Externalizable {
         glPopMatrix();
         glColor4d(1, 1, 1, 1);
     }
-
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeDouble(timeLeft);
-        out.writeObject(position);
-        out.writeObject(velocity);
-        out.writeBoolean(alive);
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        timeLeft = in.readDouble();
-        position = (Vector2D) in.readObject();
-        velocity = (Vector2D) in.readObject();
-        alive = in.readBoolean();
-    }
-
 
     public boolean isAlive() {
         return alive;
