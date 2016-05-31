@@ -3,14 +3,12 @@ package game.engine.entities;
 import game.interfaces.Collidable;
 import game.interfaces.CollisionDetector;
 import game.interfaces.KeyboardListener;
+import game.interfaces.Texture;
 import game.utils.KeySem;
 import game.utils.KeyState;
 import game.utils.math.Vector2D;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.Serializable;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -18,28 +16,58 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Created on 09/05/16.
  */
-public class Tank extends Sprite implements KeyboardListener, Externalizable, Collidable {
+public class Tank extends Sprite implements KeyboardListener, Serializable, Collidable {
 
-    public static final Vector2D SIZE = new Vector2D(1, 1);
-    private static final int BULLETS_COUNT = 5;
-    private static final double MOVE_DELTA = 0.08;
-    private static final double ROTATION_DELTA = 0.05;
+    public static transient final Vector2D SIZE = new Vector2D(1, 1);
+    private static transient final int BULLETS_COUNT = 5;
+    private static transient final double MOVE_DELTA = 0.08;
+    private static transient final double ROTATION_DELTA = 0.05;
+    private static transient Texture texture = null;
     public double deadTick = 0;
     private Vector2D position = new Vector2D(0, 0);
     private double rotation = 90;
-    private KeySem keyW = new KeySem(GLFW_KEY_W);
-    private KeySem keyS = new KeySem(GLFW_KEY_S);
-    private KeySem keyA = new KeySem(GLFW_KEY_A);
-    private KeySem keyD = new KeySem(GLFW_KEY_D);
-    private KeySem keySpace = new KeySem(GLFW_KEY_SPACE);
     private boolean dead = false;
+    private transient KeySem keyW = new KeySem(GLFW_KEY_W);
+    private transient KeySem keyS = new KeySem(GLFW_KEY_S);
+    private transient KeySem keyA = new KeySem(GLFW_KEY_A);
+    private transient KeySem keyD = new KeySem(GLFW_KEY_D);
+    private transient KeySem keySpace = new KeySem(GLFW_KEY_SPACE);
+    private transient boolean loaded = false;
+    private int UID = -1;
 
     public Tank() {
         super("tanks", "test");
     }
 
+    public int getUID() {
+        return UID;
+    }
+
+    public void setUID(int UID) {
+        this.UID = UID;
+    }
+
+    @Override
+    public void load() {
+        loaded = true;
+        super.load();
+    }
+
+    @Override
+    protected void loadTexture() {
+        if (texture == null) {
+            super.loadTexture();
+            texture = super.texture;
+            return;
+        }
+        super.texture = texture;
+    }
+
     @Override
     public void draw() {
+        if (!loaded)
+            load();
+
         glPushMatrix();
         glColor4d(1, 1, 1, 1);
         if (dead)
@@ -114,13 +142,6 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
         keySpace.handle(keyState);
     }
 
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    }
 
     Vector2D getPosition() {
         return position;
@@ -128,5 +149,27 @@ public class Tank extends Sprite implements KeyboardListener, Externalizable, Co
 
     public void setPosition(Vector2D position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tank tank = (Tank) o;
+
+        return Double.compare(tank.rotation, rotation) == 0 && dead == tank.dead && position.equals(tank.position);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = position.hashCode();
+        temp = Double.doubleToLongBits(rotation);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (dead ? 1 : 0);
+        return result;
     }
 }

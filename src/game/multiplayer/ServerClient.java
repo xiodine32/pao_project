@@ -10,13 +10,15 @@ import java.net.Socket;
  */
 public class ServerClient extends Thread {
 
+    private static int UID = 0;
     private Server server;
     private Socket client;
-
+    private int uid = 0;
     public ServerClient(Server server, Socket client) {
         this.server = server;
         this.client = client;
         start();
+        uid = ++UID;
     }
 
 
@@ -27,8 +29,8 @@ public class ServerClient extends Thread {
             OutputStream out = client.getOutputStream();
             boolean isFirst = true;
             while (Server.RUNNING) {
-                MultiplayerLogic.singleton.send(out, isFirst);
-                MultiplayerLogic.singleton.receive(in);
+                MultiplayerLogic.singleton.send(out, isFirst, uid);
+                MultiplayerLogic.singleton.receive(in, uid);
                 isFirst = false;
             }
         } catch (Exception e) {

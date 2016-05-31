@@ -9,7 +9,7 @@ import java.io.OutputStream;
  * pao_project
  */
 public interface MultiplayerUser {
-    void receive(InputStream in) throws IOException, ClassNotFoundException;
+    void receive(InputStream inputStream, int uid) throws IOException, ClassNotFoundException;
 
-    void send(OutputStream in, boolean isFirst) throws IOException, ClassNotFoundException;
+    void send(OutputStream in, boolean isFirst, int uid) throws IOException, ClassNotFoundException;
 }

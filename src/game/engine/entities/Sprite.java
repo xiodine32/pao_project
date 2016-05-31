@@ -6,19 +6,21 @@ import game.utils.CSVSingleton;
 import game.utils.DisplayList;
 import game.utils.TextureWrapper;
 
+import java.io.Serializable;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 09/05/16.
  */
-public class Sprite implements Entity {
+public class Sprite implements Entity, Serializable {
 
     private final int spriteWidth;
     private final int spriteHeight;
     private final String path;
-    protected Texture texture;
+    protected transient Texture texture;
     private int sprite;
-    private DisplayList[] lists;
+    private transient DisplayList[] lists;
 
     public Sprite(String type, String internalName) {
         final String result = CSVSingleton.getInstance().get(type, internalName);

@@ -14,6 +14,8 @@ import game.utils.Debug;
 import game.utils.math.Vector2D;
 import game.utils.math.Vector3D;
 
+import javax.swing.*;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 /**
@@ -61,7 +63,8 @@ public class MainMenuScreen implements Screen {
             multiplayer = new Client();
         }
         if (multiplayer != null) {
-            multiplayer.init("localhost");
+            String dialog = JOptionPane.showInputDialog("IP");
+            multiplayer.init(dialog);
             multiplayer.setup();
             multiplayer.start();
             GameScreen gameScreen = new GameScreen();

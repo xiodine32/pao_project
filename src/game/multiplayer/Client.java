@@ -16,6 +16,12 @@ public class Client extends Thread implements Multiplayer {
     public static boolean RUNNING = true;
     private String address;
 
+    private Thread startThread;
+
+    public Client() {
+        startThread = Thread.currentThread();
+    }
+
     @Override
     public void run() {
         try {
@@ -24,13 +30,14 @@ public class Client extends Thread implements Multiplayer {
             OutputStream out = socket.getOutputStream();
             boolean isFirst = true;
             while (RUNNING) {
-                MultiplayerLogic.singleton.receive(in);
-                MultiplayerLogic.singleton.send(out, isFirst);
+                MultiplayerLogic.singleton.receive(in, 0);
+                MultiplayerLogic.singleton.send(out, isFirst, 0);
                 isFirst = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        startThread.interrupt();
     }
 
 

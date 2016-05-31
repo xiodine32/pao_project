@@ -8,7 +8,8 @@ import java.io.Serializable;
  */
 public class MultiplayerState implements Serializable {
     public static final MultiplayerState SEND_MAP = new MultiplayerState(0);
-    public static final MultiplayerState SEND_DATA = new MultiplayerState(1);
+    public static final MultiplayerState SEND_ME = new MultiplayerState(1);
+    public static final MultiplayerState SEND_OTHERS = new MultiplayerState(2);
 
     private final int state;
 

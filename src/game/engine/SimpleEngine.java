@@ -91,6 +91,7 @@ public class SimpleEngine implements Engine {
                 Thread.sleep((long) (1000 * FPS) / 2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                running = false;
             }
 
             glfwSwapBuffers(window);

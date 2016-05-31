@@ -14,7 +14,7 @@ import game.interfaces.Screen;
 import game.multiplayer.MultiplayerLogic;
 import game.utils.math.Real2D;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -24,7 +24,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
  */
 public class GameScreen implements Screen {
 
-    public HashMap<Integer, Tank> otherTanks = new HashMap<>();
+    public ArrayList<Tank> otherTanks = new ArrayList<>();
     private KeyboardListener listener;
     private Engine engine;
     private Map map = new Map();
@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
         }
         mapDrawerAdaptor.draw();
         tank.draw();
-        otherTanks.forEach(((integer, tank1) -> tank1.draw()));
+        otherTanks.forEach(Tank::draw);
         BulletManager.getInstance().draw();
         mobileCamera.drawEnd();
     }
