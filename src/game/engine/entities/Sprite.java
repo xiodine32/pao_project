@@ -45,7 +45,7 @@ public class Sprite implements Entity, Serializable {
         int m = texture.getHeight() / spriteHeight;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                int k = i * n + j;
+                int k = j * m + i;
                 int finalI = i;
                 int finalJ = j;
                 lists[k] = new DisplayList(() -> {

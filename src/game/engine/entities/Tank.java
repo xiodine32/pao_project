@@ -7,8 +7,10 @@ import game.interfaces.Texture;
 import game.utils.KeySem;
 import game.utils.KeyState;
 import game.utils.math.Vector2D;
+import game.utils.math.Vector3D;
 
 import java.io.Serializable;
+import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -23,8 +25,10 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
     private static transient final double MOVE_DELTA = 0.08;
     private static transient final double MOVE_BACKWADS = 0.8;
     private static transient final double ROTATION_DELTA = 0.05;
+    private static transient final int TICKS_TO_DRAW = 10;
     private static transient Texture texture = null;
     public double deadTick = 0;
+    public Vector3D color = null;
     private Vector2D position = new Vector2D(0, 0);
     private double rotation = 90;
     private boolean dead = false;
@@ -35,9 +39,14 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
     private transient KeySem keySpace = new KeySem(GLFW_KEY_SPACE);
     private transient boolean loaded = false;
     private int UID = -1;
+    private transient int ticksToDraw = 0;
 
     public Tank() {
-        super("tanks", "test");
+        super("tanks", "tank");
+        Random random = new Random();
+        color = new Vector3D(Math.min(0.5, random.nextDouble()),
+                Math.min(0.5, random.nextDouble()),
+                Math.min(0.5, random.nextDouble()));
     }
 
     public int getUID() {
@@ -70,7 +79,7 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
             load();
 
         glPushMatrix();
-        glColor4d(1, 1, 1, 1);
+        glColor4d(color.getX(), color.getY(), color.getZ(), 1);
         if (dead)
             glColor4d(1, 0, 0, 1);
 
@@ -81,7 +90,6 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
         glColor4d(1, 1, 1, 1);
 
     }
-
 
     @Override
     public void tick(CollisionDetector collisionDetector) {
@@ -110,27 +118,38 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
                     Math.cos(rotation),
                     Math.sin(rotation))));
         }
-
+        boolean movedX = delta != 0, movedY = delta != 0;
         Vector2D oldPosition = position;
         position = position.translate(
                 delta * MOVE_DELTA * Math.cos(rotation),
                 0
         );
-        if (collisionDetector.collidesWithWorld(position, SIZE))
+        if (collisionDetector.collidesWithWorld(position, SIZE)) {
             position = oldPosition;
+            movedX = false;
+        }
 
         oldPosition = position;
         position = position.translate(0,
                 delta * MOVE_DELTA * Math.sin(rotation)
         );
-        if (collisionDetector.collidesWithWorld(position, SIZE))
+        if (collisionDetector.collidesWithWorld(position, SIZE)) {
             position = oldPosition;
+            movedY = false;
+        }
 
         if (BulletManager.getInstance().collidesWith(position, collisionDetector)) {
             dead = true;
             deadTick = glfwGetTime();
         }
 
+        if (movedX || movedY) {
+            if (ticksToDraw == 0) {
+                ticksToDraw = TICKS_TO_DRAW;
+                setSprite((getSprite() + 1) % 4);
+            }
+            ticksToDraw--;
+        }
         if (dead && glfwGetTime() - deadTick > 5) {
             dead = false;
         }
@@ -146,7 +165,7 @@ public class Tank extends Sprite implements KeyboardListener, Serializable, Coll
     }
 
 
-    Vector2D getPosition() {
+    public Vector2D getPosition() {
         return position;
     }
 

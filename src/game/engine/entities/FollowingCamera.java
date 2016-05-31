@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 public class FollowingCamera implements Camera, Logic, KeyboardListener {
 
     private Tank followingTank;
-    private Vector3D realPosition = new Vector3D(0, 0, -15);
+    private Vector3D realPosition = new Vector3D(0, 0, -10);
 
     private KeySem keyQ = new KeySem(GLFW_KEY_Q);
     private KeySem keyE = new KeySem(GLFW_KEY_E);
@@ -49,8 +49,8 @@ public class FollowingCamera implements Camera, Logic, KeyboardListener {
         double newPositionZ = realPosition.getZ() + deltaZ;
         if (newPositionZ < -30)
             newPositionZ = -30;
-        if (newPositionZ > -10)
-            newPositionZ = -10;
+        if (newPositionZ > -5)
+            newPositionZ = -5;
         Vector3D position = new Vector3D(-followingTank.getPosition().getX(), -followingTank.getPosition().getY(), newPositionZ);
 
         final double DELTA = 0.1;

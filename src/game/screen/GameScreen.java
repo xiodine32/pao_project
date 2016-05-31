@@ -15,6 +15,7 @@ import game.multiplayer.MultiplayerLogic;
 import game.utils.math.Real2D;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -35,7 +36,10 @@ public class GameScreen implements Screen {
     private CollisionDetector collisionDetector = new BoundingBoxCollisionDetector(map);
 
     public GameScreen() {
-        tank.setPosition(new Real2D(1, 1));
+        Random random = new Random();
+        do {
+            tank.setPosition(new Real2D(1 + random.nextInt(Map.WIDTH - 1), 1 + random.nextInt(Map.HEIGHT - 1)));
+        } while (collisionDetector.collidesWithWorld(tank.getPosition(), Tank.SIZE));
     }
 
     @Override
