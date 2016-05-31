@@ -1,0 +1,50 @@
+package game.multiplayer;
+
+import game.screen.GameScreen;
+import game.utils.Debug;
+
+import java.io.*;
+
+/**
+ * Created by Xiodine on 31/05/2016.
+ * pao_project
+ */
+public class MultiplayerLogic implements MultiplayerUser {
+    public final static MultiplayerLogic singleton = new MultiplayerLogic();
+    private GameScreen gameScreen;
+    private Thread threadUser;
+
+    private boolean firstContact = true;
+
+    public void setThreadUser(Thread threadUser) {
+        this.threadUser = threadUser;
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    @Override
+    public void receive(InputStream inputStream) throws IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        MultiplayerState state = new MultiplayerState(objectInputStream.readInt());
+        firstContact = false;
+        Debug.l("recv: " + state);
+        gameScreen.getMap();
+    }
+
+    @Override
+    public void send(OutputStream in) throws IOException, ClassNotFoundException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(in);
+        if (firstContact) {
+            firstContact = false;
+            Debug.l("sent first contact");
+            objectOutputStream.writeInt(MultiplayerState.SEND_MAP.getState());
+            objectOutputStream.writeObject(gameScreen.getMap());
+        }
+    }
+
+    public void stop() {
+        threadUser.interrupt();
+    }
+}

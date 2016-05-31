@@ -6,6 +6,10 @@ import game.engine.entities.MobileCamera;
 import game.interfaces.Engine;
 import game.interfaces.KeyboardListener;
 import game.interfaces.Screen;
+import game.multiplayer.Client;
+import game.multiplayer.Multiplayer;
+import game.multiplayer.MultiplayerLogic;
+import game.multiplayer.Server;
 import game.utils.Debug;
 import game.utils.math.Vector2D;
 import game.utils.math.Vector3D;
@@ -49,11 +53,20 @@ public class MainMenuScreen implements Screen {
         host.tick();
         client.tick();
 
+        Multiplayer multiplayer = null;
         if (host.isPressed()) {
-            engine.changeScreen(new GameScreen());
+            multiplayer = new Server();
         }
         if (client.isPressed()) {
-            engine.changeScreen(new GameScreen());
+            multiplayer = new Client();
+        }
+        if (multiplayer != null) {
+            multiplayer.init("localhost");
+            multiplayer.setup();
+            multiplayer.start();
+            GameScreen gameScreen = new GameScreen();
+            engine.changeScreen(gameScreen);
+            MultiplayerLogic.singleton.setGameScreen(gameScreen);
         }
     }
 

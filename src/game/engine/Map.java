@@ -1,12 +1,13 @@
 package game.engine;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by xiodine on 5/12/16.
  * pao_project
  */
-public class Map {
+public class Map implements Serializable {
     public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
     private byte[][] map = new byte[WIDTH][HEIGHT];

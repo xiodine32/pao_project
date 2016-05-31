@@ -11,6 +11,7 @@ import game.interfaces.CollisionDetector;
 import game.interfaces.Engine;
 import game.interfaces.KeyboardListener;
 import game.interfaces.Screen;
+import game.multiplayer.MultiplayerLogic;
 import game.utils.math.Real2D;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -69,6 +70,7 @@ public class GameScreen implements Screen {
     public void unload(Engine engine) {
         tank.unload();
         mapDrawerAdaptor.unload();
+        MultiplayerLogic.singleton.stop();
     }
 
     @Override
@@ -86,5 +88,13 @@ public class GameScreen implements Screen {
         BulletManager.getInstance().tick(collisionDetector);
         tank.tick(collisionDetector);
         mobileCamera.tick();
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public Tank getTank() {
+        return tank;
     }
 }
