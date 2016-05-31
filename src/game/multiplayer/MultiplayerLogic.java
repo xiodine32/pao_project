@@ -1,5 +1,6 @@
 package game.multiplayer;
 
+import game.engine.Map;
 import game.screen.GameScreen;
 import game.utils.Debug;
 
@@ -12,11 +13,10 @@ import java.io.*;
 public class MultiplayerLogic implements MultiplayerUser {
     public final static MultiplayerLogic singleton = new MultiplayerLogic();
     private GameScreen gameScreen;
-    private Thread threadUser;
-
+    private Multiplayer threadUser;
     private boolean firstContact = true;
 
-    public void setThreadUser(Thread threadUser) {
+    public void setThreadUser(Multiplayer threadUser) {
         this.threadUser = threadUser;
     }
 
@@ -30,7 +30,15 @@ public class MultiplayerLogic implements MultiplayerUser {
         MultiplayerState state = new MultiplayerState(objectInputStream.readInt());
         firstContact = false;
         Debug.l("recv: " + state);
-        gameScreen.getMap();
+        if (state.getState() == MultiplayerState.SEND_MAP.getState()) {
+            Debug.l("reading map: " + state);
+            Object o = objectInputStream.readObject();
+            gameScreen.setMap((Map) o);
+            Debug.l("done reading map: " + state);
+            return;
+        }
+        Debug.l("reading object");
+        Object o = objectInputStream.readObject();
     }
 
     @Override
@@ -41,7 +49,12 @@ public class MultiplayerLogic implements MultiplayerUser {
             Debug.l("sent first contact");
             objectOutputStream.writeInt(MultiplayerState.SEND_MAP.getState());
             objectOutputStream.writeObject(gameScreen.getMap());
+            objectOutputStream.flush();
+            return;
         }
+        objectOutputStream.writeInt(MultiplayerState.SEND_DATA.getState());
+        objectOutputStream.writeObject(gameScreen.getTank());
+        objectOutputStream.flush();
     }
 
     public void stop() {

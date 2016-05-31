@@ -14,6 +14,8 @@ import game.interfaces.Screen;
 import game.multiplayer.MultiplayerLogic;
 import game.utils.math.Real2D;
 
+import java.util.HashMap;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 /**
@@ -22,18 +24,15 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
  */
 public class GameScreen implements Screen {
 
+    public HashMap<Integer, Tank> otherTanks = new HashMap<>();
     private KeyboardListener listener;
     private Engine engine;
-
     private Map map = new Map();
     private Tank tank = new Tank();
-
-    private CollisionDetector collisionDetector = new BoundingBoxCollisionDetector(map);
-
     private FollowingCamera mobileCamera = new FollowingCamera(tank);
 
     private MapDrawerAdaptor mapDrawerAdaptor = new MapDrawerAdaptor(map);
-
+    private CollisionDetector collisionDetector = new BoundingBoxCollisionDetector(map);
 
     public GameScreen() {
         tank.setPosition(new Real2D(1, 1));
@@ -76,15 +75,22 @@ public class GameScreen implements Screen {
     @Override
     public void draw() {
         mobileCamera.draw();
+        if (mapDrawerAdaptor == null) {
+            mapDrawerAdaptor = new MapDrawerAdaptor(map);
+            collisionDetector = new BoundingBoxCollisionDetector(map);
+            mapDrawerAdaptor.load();
+        }
         mapDrawerAdaptor.draw();
         tank.draw();
+        otherTanks.forEach(((integer, tank1) -> tank1.draw()));
         BulletManager.getInstance().draw();
         mobileCamera.drawEnd();
     }
 
     @Override
     public void tick() {
-        mapDrawerAdaptor.tick();
+        if (mapDrawerAdaptor != null)
+            mapDrawerAdaptor.tick();
         BulletManager.getInstance().tick(collisionDetector);
         tank.tick(collisionDetector);
         mobileCamera.tick();
@@ -92,6 +98,11 @@ public class GameScreen implements Screen {
 
     public Map getMap() {
         return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+        mapDrawerAdaptor = null;
     }
 
     public Tank getTank() {

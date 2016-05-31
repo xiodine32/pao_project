@@ -37,6 +37,11 @@ public class Client extends Thread implements Multiplayer {
     }
 
     @Override
+    public boolean isServer() {
+        return false;
+    }
+
+    @Override
     public void init(String address) {
         this.address = address;
     }

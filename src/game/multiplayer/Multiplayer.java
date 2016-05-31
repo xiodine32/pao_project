@@ -10,4 +10,8 @@ public interface Multiplayer {
     void start();
 
     void setup();
+
+    boolean isServer();
+
+    void interrupt();
 }

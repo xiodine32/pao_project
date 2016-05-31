@@ -37,6 +37,11 @@ public class Server extends Thread implements Multiplayer {
         this.setDaemon(true);
     }
 
+    @Override
+    public boolean isServer() {
+        return true;
+    }
+
     public void close(ServerClient serverClient) {
         try {
             serverClient.join();
