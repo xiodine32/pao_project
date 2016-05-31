@@ -32,6 +32,7 @@ public class Client extends Thread implements Multiplayer {
             while (RUNNING) {
                 MultiplayerLogic.singleton.receive(in, 0);
                 MultiplayerLogic.singleton.send(out, isFirst, 0);
+                Thread.sleep(1000 / 60);
                 isFirst = false;
             }
         } catch (Exception e) {

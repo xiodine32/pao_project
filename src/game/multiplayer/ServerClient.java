@@ -32,6 +32,7 @@ public class ServerClient extends Thread {
                 MultiplayerLogic.singleton.send(out, isFirst, uid);
                 MultiplayerLogic.singleton.receive(in, uid);
                 isFirst = false;
+                Thread.sleep(1000 / 60);
             }
         } catch (Exception e) {
             e.printStackTrace();
