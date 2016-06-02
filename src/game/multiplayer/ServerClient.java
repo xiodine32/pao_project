@@ -1,5 +1,7 @@
 package game.multiplayer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -25,14 +27,14 @@ public class ServerClient extends Thread {
     @Override
     public void run() {
         try {
-            InputStream in = client.getInputStream();
-            OutputStream out = client.getOutputStream();
+            InputStream in = new BufferedInputStream(client.getInputStream());
+            OutputStream out = new BufferedOutputStream(client.getOutputStream());
             boolean isFirst = true;
             while (Server.RUNNING) {
                 MultiplayerLogic.singleton.send(out, isFirst, uid);
                 MultiplayerLogic.singleton.receive(in, uid);
                 isFirst = false;
-                Thread.sleep(1000 / 60);
+                Thread.sleep(1000 / 120);
             }
         } catch (Exception e) {
             e.printStackTrace();

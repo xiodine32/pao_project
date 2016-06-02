@@ -29,6 +29,7 @@ public class Server extends Thread implements Multiplayer {
         while (RUNNING) {
             try {
                 Socket socket = serverSocket.accept();
+                socket.setTcpNoDelay(true);
                 new ServerClient(this, socket);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -2,6 +2,8 @@ package game.multiplayer;
 
 import game.interfaces.Multiplayer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -26,13 +28,14 @@ public class Client extends Thread implements Multiplayer {
     public void run() {
         try {
             Socket socket = new Socket(address, PORT);
-            InputStream in = socket.getInputStream();
-            OutputStream out = socket.getOutputStream();
+            socket.setTcpNoDelay(true);
+            InputStream in = new BufferedInputStream(socket.getInputStream());
+            OutputStream out = new BufferedOutputStream(socket.getOutputStream());
             boolean isFirst = true;
             while (RUNNING) {
                 MultiplayerLogic.singleton.receive(in, 0);
                 MultiplayerLogic.singleton.send(out, isFirst, 0);
-                Thread.sleep(1000 / 60);
+                Thread.sleep(1000 / 120);
                 isFirst = false;
             }
         } catch (Exception e) {
