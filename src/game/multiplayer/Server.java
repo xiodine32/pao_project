@@ -43,12 +43,6 @@ public class Server extends Thread implements Multiplayer {
     }
 
     @Override
-    public void setup() {
-        MultiplayerLogic.singleton.setThreadUser(this);
-        this.setDaemon(true);
-    }
-
-    @Override
     public boolean isServer() {
         return true;
     }

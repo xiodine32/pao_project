@@ -31,24 +31,15 @@ public class Client extends Thread implements Multiplayer {
             socket.setTcpNoDelay(true);
             InputStream in = new BufferedInputStream(socket.getInputStream());
             OutputStream out = new BufferedOutputStream(socket.getOutputStream());
-            boolean isFirst = true;
             while (RUNNING) {
                 MultiplayerLogic.singleton.receive(in, 0);
-                MultiplayerLogic.singleton.send(out, isFirst, 0);
+                MultiplayerLogic.singleton.send(out, false, 0);
                 Thread.sleep(1000 / 120);
-                isFirst = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         startThread.interrupt();
-    }
-
-
-    @Override
-    public void setup() {
-        MultiplayerLogic.singleton.setThreadUser(this);
-        this.setDaemon(true);
     }
 
     @Override

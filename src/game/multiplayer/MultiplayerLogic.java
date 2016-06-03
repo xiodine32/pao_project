@@ -116,6 +116,7 @@ public class MultiplayerLogic implements MultiplayerUser {
     @Override
     public void send(OutputStream in, boolean isFirst, int uid) throws IOException, ClassNotFoundException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(in);
+
         if (isFirst) {
             Debug.l("sent first contact");
             objectOutputStream.writeInt(MultiplayerState.SEND_MAP.getState());
